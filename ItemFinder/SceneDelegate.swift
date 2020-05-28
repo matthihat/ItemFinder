@@ -12,12 +12,67 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+
+        guard let scene = (scene as? UIWindowScene) else { return }
+        
+        window = UIWindow(windowScene: scene)
+        window?.makeKeyAndVisible()
+        
+        window?.rootViewController = createTabBar()
+        
+//        Fix to make SVProgressHUD show up in center of screen
         guard let _ = (scene as? UIWindowScene) else { return }
+              AppDelegate.standard.window = window
+    }
+    
+    
+    func createMainNC() -> UINavigationController {
+//        let layout = UICollectionViewFlowLayout()
+//        layout.itemSize = CGSize(width: 100, height: 100)
+        let flowLayout = UICollectionViewFlowLayout()
+//        flowLayout.scrollDirection = .horizontal
+//        flowLayout.itemSize = CGSize(width: 120, height: 120)
+        let mainCV = MainItemCollectionView(collectionViewLayout: flowLayout)
+        mainCV.title = "Main"
+        mainCV.tabBarItem = UITabBarItem(title: "Items", image: #imageLiteral(resourceName: "baseline_category_black_36dp"), tag: 0)
+        
+        return UINavigationController(rootViewController: mainCV)
+    }
+    
+    func createProfileNC() -> UINavigationController {
+        let profileVC = ProfileVC()
+        profileVC.title = "main profile"
+        profileVC.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        
+        return UINavigationController(rootViewController: profileVC)
+    }
+    
+    func configureBarAppearanceGlobally() {
+//        sets tab bar background color
+        UITabBar.appearance().barTintColor = .mainYellow
+        
+        // Title text color Black => Text appears in white
+        UINavigationBar.appearance().barStyle = .default
+
+        // Translucency; false == opaque, can not be used if prefers large titles is true
+//        UINavigationBar.appearance().isTranslucent = false
+
+        // BACKGROUND color of nav bar
+        UINavigationBar.appearance().barTintColor = UIColor.mainYellow
+        
+        // Foreground color of bar button item text, e.g. "< Back", "Done", and so on.
+        UINavigationBar.appearance().tintColor = UIColor.black
+        
+    }
+
+    func createTabBar() -> UITabBarController{
+        let tabbar = UITabBarController()
+        tabbar.viewControllers = [createMainNC(), createProfileNC()]
+        
+        configureBarAppearanceGlobally()
+        
+        return tabbar
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

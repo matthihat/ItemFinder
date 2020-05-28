@@ -7,7 +7,25 @@
 		<key>ItemFinder.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>46</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>1843244B246EFA7700FB98E6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>18432461246EFA7A00FB98E6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1843246C246EFA7A00FB98E6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

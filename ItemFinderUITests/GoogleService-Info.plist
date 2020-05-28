@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>229116104960-d08b7ejb4hkls0k9f2v5apsim8ltunij.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.229116104960-d08b7ejb4hkls0k9f2v5apsim8ltunij</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDq_CUsqqYfFMi4fiuNWmFLRDJe10xOkUE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>229116104960</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mattiasprivate.ItemFinder</string>
+	<key>PROJECT_ID</key>
+	<string>itemfinder-c0570</string>
+	<key>STORAGE_BUCKET</key>
+	<string>itemfinder-c0570.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:229116104960:ios:584125d21b69d6c4d8e3e5</string>
+	<key>DATABASE_URL</key>
+	<string>https://itemfinder-c0570.firebaseio.com</string>
+</dict>
+</plist>
