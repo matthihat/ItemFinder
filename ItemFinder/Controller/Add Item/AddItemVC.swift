@@ -36,19 +36,32 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
     
     var selectedImages = [UIImage]()
     
+    var itemIsForSale: Bool?
+    
     let frame = CGRect.zero
     
-    lazy var addItemView = AddItemView(frame: frame, collectionView: collectionView, delegate: self)
+    lazy var categoryPickerView: UIPickerView = {
+       let picker = UIPickerView()
+        return picker
+    }()
+    
+    lazy var addItemView = AddItemView(frame: frame, collectionView: collectionView, delegate: self, picker: categoryPickerView)
     
     lazy var validation: ValidationService = {
         let validation = ValidationService()
         return validation
     }()
     
+    var selectedCategory: String?
+    
+    
     let reuseIdentifier = "Cell"
     var photoCVDataSource: PhotoCVDataSource?
     var photoCVDelegate: PhotoCVDelegate?
     var imageSelectorDelegate: ImageSelectorDelegate?
+//    var categoryPickerView = UIPickerView()
+    var categoryPickerViewDelegateDataSource: CategoryPickerDelegateDataSource?
+    
     
 //    MARK: - Life cycle
     override func viewDidLoad() {
@@ -61,6 +74,8 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
         
 //        class for receiving selected image (camera or photo)
         configureImageSelector()
+        
+        configurePickerView()
         
     }
     
@@ -90,6 +105,18 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
         
         collectionView.dataSource = photoCVDataSource
         collectionView.delegate = photoCVDelegate
+        
+    }
+    
+    func configurePickerView() {
+        
+        categoryPickerViewDelegateDataSource = CategoryPickerDelegateDataSource(categoryPickerView, self)
+        categoryPickerView.dataSource = categoryPickerViewDelegateDataSource
+        categoryPickerView.delegate = categoryPickerViewDelegateDataSource
+        
+//        categoryPickerDelegate = CategoryPickerDelegate()
+//        categoryPickerView.delegate = categoryPickerDelegate
+        
     }
     
     func cleanUpView() {
@@ -127,6 +154,7 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
     func configureImageSelector() {
         imageSelectorDelegate = ImageSelectorDelegate(with: photoLibraryPicker, withDelegate: self)
     }
+    
     
 //    MARK: - Delegate methods
     func selectedCell(selectedIndexPath: IndexPath, selectedCell: ItemPhotoCVCell) {
@@ -167,11 +195,20 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
                                                                cellWithItemImage: didSelectImageWithImage)
     }
     
+//    handle item is for sale or not selected in view
+    func itemIsForSale(_ sender: UISwitch) {
+        itemIsForSale = true
+    }
+    
+    func itemIsNotForSale(_ sender: UISwitch) {
+        itemIsForSale = false
+    }
+    
 //    when save button in view is pressed
     func saveButton(_ button: UIButton, withTitle title: String?, withKeyWords keyWords: String?, withDescription description: String?) {
         
 //        create item
-        let itemUnvalidated = ItemForUpload(title, keyWords?.components(separatedBy: " "), description, selectedImages)
+        let itemUnvalidated = ItemForUpload(title, keyWords, description, selectedImages, itemIsForSale ?? false, selectedCategory)
         
 //        validate title description
         do {
@@ -196,6 +233,31 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
     
     func closeButton(_ button: UIButton) {
         self.dismiss(animated: true, completion: nil)
+        self.removeFromParent()
     }
 
+}
+
+// delegate method for getting selected category in pickerview
+extension AddItemVC: CategoryPickerDelegate {
+    func pickerView(_ picker: UIPickerView, _ selectedCategory: String) {
+        
+//        assign local variable which category was selected
+        switch selectedCategory {
+        case SportCategories.biking.rawValue:
+            self.selectedCategory = selectedCategory
+        case SportCategories.running.rawValue:
+            self.selectedCategory = selectedCategory
+        case SportCategories.skiing.rawValue:
+            self.selectedCategory = selectedCategory
+        default:
+            Void()
+        }
+    }
+    
+//    func pickerView(_ picker: UIPickerView) {
+//        print("DEBUG valde", picker.selectedRow(inComponent: 0))
+//    }
+    
+    
 }

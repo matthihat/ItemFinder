@@ -9,13 +9,21 @@
 import UIKit
 import Firebase
 
-class MainItemCollectionView: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class MainItemCollectionView: UICollectionViewController {
     
 //    MARK: - Properties
     lazy var addItemVC: AddItemVC = {
         let vc = AddItemVC()
         return vc
     }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(handleReloadData), for: .valueChanged)
+        return refresh
+    }()
+    
+    var mainItemCVDataSource: MainItemCVDataSource?
     
     var uid: String?
 
@@ -26,36 +34,52 @@ class MainItemCollectionView: UICollectionViewController, UICollectionViewDelega
         
         checkIfUserIsLoggedIn()
         
-        collectionView.frame = view.safeAreaLayoutGuide.layoutFrame
-        
-//        collectionView.setCollectionViewLayout(UICollectionViewFlowLayout(), animated: true)
-        
-//        collectionView.collectionViewLayout = UICollectionViewFlowLayout()
-        
-        collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
-        
-        collectionView.alwaysBounceVertical = true
-        
         configureNavBar()
         
-        collectionView.backgroundColor = .mainYellow
+        configureCollectionViewDataSource()
+
+        configureCollectionView()
+        
+        
+        
+        configureRefreshControl()
     }
     
-    // initialized with a non-nil layout parameter
-//    init() {
-//        super.init(collectionViewLayout: UICollectionViewFlowLayout())
-//        collectionView.frame = view.safeAreaLayoutGuide.layoutFrame
-//    }
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
 //    MARK: - Helper functions
     
     func configureNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleAddPressed))
+        
         self.prefersLargeNCTitles()
-//        navigationController?.navigationBar.barTintColor = .mainYellow
+    }
+    
+    func configureCollectionViewDataSource() {
+        mainItemCVDataSource = MainItemCVDataSource(self.collectionView)
+    }
+    
+    func configureCollectionView() {
+        collectionView.backgroundColor = .mainYellow
+        
+        collectionView.frame = view.safeAreaLayoutGuide.layoutFrame
+        
+        collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
+        
+        collectionView.dataSource = mainItemCVDataSource
+        collectionView.delegate = self
+        
+        collectionView.alwaysBounceVertical = true
+    }
+    
+    func configureRefreshControl() {
+        collectionView.refreshControl = refreshControl
+    }
+    
+//    delegate methods
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("DEBUG selected", indexPath.row)
+        
     }
     
     
@@ -64,24 +88,17 @@ class MainItemCollectionView: UICollectionViewController, UICollectionViewDelega
         present(addItemVC, animated: true, completion: nil)
     }
     
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    @objc func handleReloadData() {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCell.identifier, for: indexPath) as! ItemCell
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        Service.shared.fetchItem()
         
-        return CGSize(width: view.frame.width, height: 100)
+        self.refreshControl.endRefreshing()
+            
     }
+    
+
+
+
     
 //    check if user is logged in and if not set LoginVC as root VC
     func checkIfUserIsLoggedIn() {
@@ -98,4 +115,13 @@ class MainItemCollectionView: UICollectionViewController, UICollectionViewDelega
             
         }
     }
+}
+
+extension MainItemCollectionView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: view.frame.width, height: 100)
+    }
+
 }

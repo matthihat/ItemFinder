@@ -22,6 +22,18 @@ class AddItemView: UIView {
         return label
     }()
     
+    lazy var isForSaleLabel: UILabel = {
+        let label = UILabel.textLabel(titleLabel: "Is for sale", ofFontSize: 18)
+        return label
+    }()
+    
+    lazy var isForSaleSwitch: UISwitch = {
+        let selector = UISwitch()
+        selector.isOn = false
+        selector.addTarget(self, action: #selector(handleItemIsForSale(_:)), for: .valueChanged)
+        return selector
+    }()
+    
     lazy var titleTextField: UITextField = {
         let textField = UITextField.textField(withPlaceHolder: "Title")
         return textField
@@ -64,6 +76,7 @@ class AddItemView: UIView {
     }()
     
     var collectionView: UICollectionView?
+    var picker: UIPickerView?
     
     lazy var stack: UIStackView = {
         let stack = UIStackView()
@@ -83,10 +96,11 @@ class AddItemView: UIView {
 //        configureUI()
     }
     
-    convenience init(frame: CGRect, collectionView: UICollectionView, delegate: AddItemViewDelegate) {
+    convenience init(frame: CGRect, collectionView: UICollectionView, delegate: AddItemViewDelegate, picker: UIPickerView) {
         self.init(frame: frame)
         self.collectionView = collectionView
         self.delegate = delegate
+        self.picker = picker
         
         configureUI()
     }
@@ -99,20 +113,28 @@ class AddItemView: UIView {
     func configureUI() {
         backgroundColor = .systemYellow
         
-        addSubview(closeButton)
-        closeButton.anchor(top: safeAreaLayoutGuide.topAnchor, right: rightAnchor, paddingTop: 8, paddingRight: 8)
+        picker?.heightAnchor.constraint(equalToConstant: 120).isActive = true
         
         stack.addArrangedSubview(titleInputView)
         stack.addArrangedSubview(collectionView!)
+        stack.addArrangedSubview(picker!)
         stack.addArrangedSubview(keywordInputView)
         stack.addArrangedSubview(descriptionInputView)
         stack.addArrangedSubview(saveButton)
         
-        addSubviews(descriptionTitleLabel, stack)
+        addSubviews(descriptionTitleLabel, closeButton, isForSaleLabel, isForSaleSwitch, stack)
+        
+        closeButton.anchor(top: safeAreaLayoutGuide.topAnchor, right: rightAnchor, paddingTop: 8, paddingRight: 8)
         
         descriptionTitleLabel.anchor(top: safeAreaLayoutGuide.topAnchor, left: safeAreaLayoutGuide.leftAnchor, paddingTop: 16, paddingLeft: 16)
         
-        stack.anchor(top: descriptionTitleLabel.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        isForSaleLabel.anchor(top: descriptionTitleLabel.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingRight: 16)
+        
+        isForSaleSwitch.anchor(top: isForSaleLabel.bottomAnchor, right: rightAnchor, paddingTop: 4, paddingRight: 16)
+        
+        stack.anchor(top: isForSaleSwitch.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 16, paddingRight: 16)
+        
+        
 
     }
     
@@ -125,9 +147,23 @@ class AddItemView: UIView {
 //    MARK: - Handlers
     @objc func handleClosePressed() {
         delegate?.closeButton(closeButton)
+        self.removeFromSuperview()
+    }
+    
+    @objc func handleItemIsForSale(_ sender: UISwitch) {
+        if sender.isOn {
+            delegate?.itemIsForSale(sender)
+        } else {
+            delegate?.itemIsNotForSale(sender)
+        }
+        
     }
     
     @objc func handleSaveButtonPressed() {
         delegate?.saveButton(saveButton, withTitle: titleTextField.text, withKeyWords: keywordTextField.text, withDescription: descriptionTextView.text)
     }
 }
+
+//class categoryPickerViewDataSource: NSObject, UIPickerViewDataSource {
+//
+//}

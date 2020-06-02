@@ -57,12 +57,26 @@ class Service: NSObject {
         }
     }
     
+//    upload item id
+    func uploadItemId(_ itemId: String, completion: @escaping(Result<Bool,Error>) -> ()) {
+        REF_ITEMS.child(itemId).updateChildValues(["id" : itemId]) { (err, ref) in
+            
+//            handle error
+            if let error = err {
+                completion(.failure(error))
+                return
+            }
+            
+            completion(.success(true))
+        }
+    }
+    
 //    upload title of item
     func uploadItemTitle(_ itemId: String, _ item: ItemForUpload, completion: @escaping(Result<Bool, Error>) ->()) {
         
         guard let title = item.title else { completion(.failure(CustomError.foundNil)); return}
         
-        REF_ITEMS.child(itemId).child("description").updateChildValues(["title" : title]) { (err, ref) in
+        REF_ITEMS.child(itemId).updateChildValues(["title" : title]) { (err, ref) in
                
             if let error = err {
                    completion(.failure(error))
@@ -76,7 +90,7 @@ class Service: NSObject {
     func uploadItemDescription(_ itemId: String, _ item: ItemForUpload, completion: @escaping(Result<Bool, Error>) ->()) {
         
         if let description = item.description {
-            REF_ITEMS.child(itemId).child("description").updateChildValues(["description" : description]) { (err, ref) in
+            REF_ITEMS.child(itemId).updateChildValues(["description" : description]) { (err, ref) in
                 
 //                handle error
                 if let error = err {
@@ -91,7 +105,7 @@ class Service: NSObject {
 //    upload item id to user
     func uploadItemIdToUser(_ uid: String, _ itemId: String, completion: @escaping(Result<Bool, Error>) -> ()) {
         
-        USER_REF.child(uid).child("item").updateChildValues([itemId : "1"]) { (err, ref) in
+        USER_REF.child(uid).child("items").updateChildValues([itemId : "1"]) { (err, ref) in
             
 //            handle error
             if let error = err {
@@ -166,21 +180,30 @@ class Service: NSObject {
         }
     }
     
+//    MARK: TODO remove unnecessary info in imageInfo, image id is never used
 //    upload item image url to user ref
-    func uploadItemImageUrl(_ uid: String, _ itemId: String, _ imageInfo: [Dictionary<String,String>], completion: @escaping(Result<Bool, Error>) -> ()) {
+    func uploadItemImageUrl(_ uid: String, _ itemId: String, _ imageInfo: [Dictionary<String,String>]?, completion: @escaping(Result<Bool, Error>) -> ()) {
         
         var counter = 0
         let group = DispatchGroup()
-        
+        var values = [Dictionary<String,String>]()
+
         group.enter()
         
-        imageInfo.forEach { (dict) in
+        guard let imageInfo = imageInfo else {
+            completion(.success(true))
+            return
+        }
+        
+        var urlArray = [String]()
             
+        imageInfo.forEach { (dict) in
+
 //            create key for path
-            guard let key = dict.keys.first else {
-                completion(.failure(CustomError.foundNil))
-                return
-            }
+//            guard let key = dict.keys.first else {
+//                completion(.failure(CustomError.foundNil))
+//                return
+//            }
             
 //            create url for value
             guard let urlString = dict.values.first else {
@@ -188,24 +211,45 @@ class Service: NSObject {
                 return
             }
             
-            REF_ITEMS.child(itemId).child("image_url").updateChildValues([key: urlString]) { (err, ref) in
+            urlArray.append(urlString)
+            
+            let dict = ["image_url" : urlString]
+            values.append(dict)
+//            let dict2 = []
+            
+//            REF_ITEMS.child(itemId).child("image_url").updateChildValues([key: urlString]) { (err, ref) in
 
 //                handle error
-                if let error = err {
-                    completion(.failure(error))
-                    return
-                }
+//                if let error = err {
+//                    completion(.failure(error))
+//                    return
+//                }
 
 //                when all urls are uploaded, exit group
                 counter += 1
                 if counter == imageInfo.count {
                     group.leave()
                 }
-            }
+//            }
         }
         
         group.notify(queue: .main) {
-            completion(.success(true))
+            
+//            let urlDict = []
+            let uploadValues = ["image_url" : values]
+            
+            
+//            upload values
+            REF_ITEMS.child(itemId).updateChildValues(uploadValues) { (err, ref) in
+                
+//                handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+                
+                completion(.success(true))
+            }
         }
     }
     
@@ -214,15 +258,82 @@ class Service: NSObject {
         let group = DispatchGroup()
         var counter = 0
         
-        if let keywords = item.keywords {
-            
-            group.enter()
-            
-            keywords.forEach { (keyword) in
+        guard let keywordsstring = item.keywords else {
+            completion(.success(true))
+            return
+        }
+        
+        guard let keywords = item.keywords?.components(separatedBy: " ") else {
+            completion(.success(true))
+            return
+        }
+        
+        guard keywords.isEmpty == false else  {
+            completion(.success(true))
+            return
+        }
+        
+        guard keywords.first != "" else {
+            completion(.success(true))
+            return
+        }
+        
+        group.enter()
+    
+        keywords.forEach { (keyword) in
+
+            REF_KEYWORD.child(keyword).updateChildValues([itemId : 1]) { (err, ref) in
                 
-                REF_KEYWORD.child(keyword).updateChildValues([itemId : 1]) { (err, ref) in
-                    
-                    counter += 1
+                counter += 1
+                
+//                    handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+                
+//                    check that all elements have been handled
+                if counter == keywords.count {
+                    group.leave()
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            
+            REF_ITEMS.child(itemId).updateChildValues(["keywords" : keywordsstring]) { (err, ref) in
+                
+//                    handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+                
+                completion(.success(true))
+            }
+        }
+    }
+    
+    func uploadIsItemForSale(_ uid: String, _ itemId: String, _ item: ItemForUpload, completion: @escaping(Result<Bool, Error>) -> ()) {
+        
+        if item.isForSale {
+            
+//            upload true to item ref
+            REF_ITEMS.child(itemId).updateChildValues(["is_for_sale" : true]) { (err, ref) in
+                
+//                handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+                
+//                upload info to item for sale ref
+                let values = [
+                    "item_id" : itemId,
+                    "user_uid" : uid
+                ]
+                
+                REF_ITEM_FOR_SALE.childByAutoId().updateChildValues(values) { (err, ref) in
                     
 //                    handle error
                     if let error = err {
@@ -230,36 +341,65 @@ class Service: NSObject {
                         return
                     }
                     
-//                    check that all elements have been handled
-                    if counter == keywords.count {
-                        group.leave()
-                    }
+                    completion(.success(true))
                 }
             }
             
-            group.notify(queue: .main) {
-                
-                var counter2 = 0
-                
-                keywords.forEach { (keyword) in
-                    REF_ITEMS.child(itemId).child("keyword").updateChildValues([keyword : 1]) { (err, ref) in
-                        
-//                        handle error
-                        if let error = err {
-                            completion(.failure(error))
-                            return
-                        }
-                        
-//                    check that all elements have been handled
-                        counter2 += 1
-                        if counter2 == keywords.count {
-                            completion(.success(true))
-                        }
-                        
-                    }
+        } else {
+            
+//            upload false to item ref
+            REF_ITEMS.child(itemId).updateChildValues(["is_for_sale" : false]) { (err, ref) in
+
+//                handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
                 }
+                completion(.success(true))
             }
         }
+    }
+    
+    func fetchItem() {
+        guard let url = URL(string: "https://itemfinder-c0570.firebaseio.com/items.json")
+            else {
+                print("DEBUG error creating url")
+            return }
         
+        URLSession.shared.dataTask(with: url) { (data, resp, err) in
+            
+//            handle error
+            if let error = err {
+                print("DEBUG error fetiching JSON from database", error.localizedDescription)
+                return
+            }
+            
+            guard let data = data else { print("DEBUG error creating data"); return }
+            
+            guard let dataString = String(data: data, encoding: .utf8) else { return }
+            
+            print("DEBUG", dataString)
+            
+            do {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let items = try decoder.decode([String : Item].self, from: data)
+                print("DEBUG skapade item med id", items.first?.key)
+                let key = items.first?.key
+                items.forEach { (dict) in
+                    print("DEBUG ", dict.value.title)
+                    let item: Item?
+                    item = dict.value
+//                    print("DEBUG titel", item?.image_url?[0].image_url)
+            }
+                
+//                let items = try JSONDecoder().decode([String : Item], from: data)
+//                print("DEBUG Item", items.description?.title)
+                
+            } catch let error {
+                print("DEBUG failed to create Item", error)
+            }
+            
+        }.resume()
     }
 }

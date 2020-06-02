@@ -23,6 +23,10 @@ protocol AddItemVCDelegate: class {
 protocol AddItemViewDelegate: class {
     func saveButton(_ button: UIButton, withTitle title: String?, withKeyWords keyWords: String?, withDescription description: String?)
     
+    func itemIsForSale(_ sender: UISwitch)
+    
+    func itemIsNotForSale(_ sender: UISwitch)
+    
     func closeButton(_ button: UIButton)
 }
 
@@ -30,3 +34,6 @@ protocol ImageProvidedDelegate: class {
     func image(_ didSelectImageWithImage: UIImage)
 }
 
+protocol CategoryPickerDelegate {
+    func pickerView(_ picker: UIPickerView, _ selectedCategory: String)
+}

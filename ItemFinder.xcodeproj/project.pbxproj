@@ -13,6 +13,8 @@
 		183E352B24730DA300D0C20B /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E352A24730DA300D0C20B /* Protocols.swift */; };
 		183E352D247319D100D0C20B /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E352C247319D100D0C20B /* Service.swift */; };
 		183E352F24731BDB00D0C20B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E352E24731BDB00D0C20B /* Constants.swift */; };
+		183E40852486BBE600064F65 /* CategoryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E40842486BBE600064F65 /* CategoryPicker.swift */; };
+		183EA35C248423880082BAB0 /* MainItemCVDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */; };
 		18432450246EFA7700FB98E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843244F246EFA7700FB98E6 /* AppDelegate.swift */; };
 		18432452246EFA7700FB98E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18432451246EFA7700FB98E6 /* SceneDelegate.swift */; };
 		18432457246EFA7700FB98E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18432455246EFA7700FB98E6 /* Main.storyboard */; };
@@ -65,6 +67,8 @@
 		183E352A24730DA300D0C20B /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		183E352C247319D100D0C20B /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		183E352E24731BDB00D0C20B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		183E40842486BBE600064F65 /* CategoryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryPicker.swift; path = "/Users/mattiastornqvist/Desktop/Programmering/ItemFinder/ItemFinder/Controller/Add Item/CategoryPicker.swift"; sourceTree = "<absolute>"; };
+		183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainItemCVDataSource.swift; sourceTree = "<group>"; };
 		1843244C246EFA7700FB98E6 /* ItemFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ItemFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1843244F246EFA7700FB98E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18432451246EFA7700FB98E6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 				18E66370248000D8003CAB13 /* Add Item */,
 				188B4ACD2471947600C39B0C /* SignUpVC */,
 				18432486246F152B00FB98E6 /* MainItemCollectionView.swift */,
+				183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */,
 				1843248B246F2FB400FB98E6 /* ProfileVC.swift */,
 			);
 			path = Controller;
@@ -249,6 +254,7 @@
 				1843248D246F4A3A00FB98E6 /* AddItemVC.swift */,
 				18E6637A2480046D003CAB13 /* PhotoCVDataSource.swift */,
 				18E6637824800440003CAB13 /* PhotoCVDelegate.swift */,
+				183E40842486BBE600064F65 /* CategoryPicker.swift */,
 			);
 			path = "Add Item";
 			sourceTree = "<group>";
@@ -560,6 +566,7 @@
 				18432450246EFA7700FB98E6 /* AppDelegate.swift in Sources */,
 				183E352B24730DA300D0C20B /* Protocols.swift in Sources */,
 				18432452246EFA7700FB98E6 /* SceneDelegate.swift in Sources */,
+				183EA35C248423880082BAB0 /* MainItemCVDataSource.swift in Sources */,
 				183E352D247319D100D0C20B /* Service.swift in Sources */,
 				18E663732480010C003CAB13 /* ValidationService.swift in Sources */,
 				1843248E246F4A3A00FB98E6 /* AddItemVC.swift in Sources */,
@@ -571,6 +578,7 @@
 				18E6637B2480046D003CAB13 /* PhotoCVDataSource.swift in Sources */,
 				1843248C246F2FB400FB98E6 /* ProfileVC.swift in Sources */,
 				188B4AD12471950600C39B0C /* ConfirmButton.swift in Sources */,
+				183E40852486BBE600064F65 /* CategoryPicker.swift in Sources */,
 				18E6637D248004B7003CAB13 /* AddItemView.swift in Sources */,
 				183DE637247C4A760074C681 /* ItemForUpload.swift in Sources */,
 				1843248A246F1B2500FB98E6 /* Extensions.swift in Sources */,
