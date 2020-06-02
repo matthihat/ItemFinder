@@ -90,7 +90,9 @@ class MainItemCollectionView: UICollectionViewController {
     
     @objc func handleReloadData() {
         
-        Service.shared.fetchItem()
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Service.shared.fetcCurrentUserItems(uid)
         
         self.refreshControl.endRefreshing()
             

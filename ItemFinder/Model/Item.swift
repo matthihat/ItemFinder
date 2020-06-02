@@ -64,6 +64,7 @@ struct Item: Decodable {
     var description: String?
     var isForSale: Bool?
     var keywords: String?
+    var category: String?
     var imageUrl: [ImageUrl]?
 }
 

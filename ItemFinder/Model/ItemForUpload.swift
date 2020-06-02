@@ -35,7 +35,7 @@ struct ItemForUpload {
         
         let group = DispatchGroup()
             
-        var imageInfo: [Dictionary<String,String>]?
+        var imageUrlString: String?
         
         Service.shared.uploadItemId(itemId) { (result) in
             
@@ -124,9 +124,9 @@ struct ItemForUpload {
             Service.shared.uploadItemImage(itemId, item.images) { (result) in
                 
                 switch result {
-                case .success(let array):
+                case .success(let urlString):
 //                    assign local variable
-                    imageInfo = array
+                    imageUrlString = urlString
                     group.leave()
                 case .failure(let error):
                     completion(.failure(error))
@@ -135,7 +135,7 @@ struct ItemForUpload {
         }
         
         group.notify(queue: .main) {
-            Service.shared.uploadItemImageUrl(uid, itemId, imageInfo) { (result) in
+            Service.shared.uploadItemImageUrl(uid, itemId, imageUrlString) { (result) in
 
                 switch result {
                 case .success(_):

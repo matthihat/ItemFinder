@@ -161,10 +161,11 @@ class Service: NSObject {
         }
     }
     
-    func uploadItemImage(_ itemId: String, _ images: [UIImage]?, completion: @escaping(Result<[Dictionary<String,String>],Error>) -> ()) {
+    func uploadItemImage(_ itemId: String, _ images: [UIImage]?, completion: @escaping(Result<String,Error>) -> ()) {
         
-        var urlStringArray = [String]()
-        var imageInfo = [Dictionary<String,String>]()
+//        var urlStringArray = [String]()
+        var urlFullString = String()
+//        var imageInfo = [Dictionary<String,String>]()
         var counter = 0
         let group = DispatchGroup()
         
@@ -172,8 +173,6 @@ class Service: NSObject {
         
         if let imageArray = images {
             imageArray.forEach { (image) in
-                
-                
                 
                 guard let data = image.jpegData(compressionQuality: 0.3) else {
                     completion(.failure(CustomError.invalidData))
@@ -204,8 +203,10 @@ class Service: NSObject {
                             return
                         }
                         
-                        let dict: Dictionary<String,String> = [imageID : urlString]
-                        imageInfo.append(dict)
+                        urlFullString.append(urlString + " ")
+                        
+//                        let dict: Dictionary<String,String> = [imageID : urlString]
+//                        imageInfo.append(dict)
 
                         counter += 1
                         
@@ -220,29 +221,31 @@ class Service: NSObject {
 //            when all images are uploaded, exit with completion success
             group.notify(queue: .main) {
 
-                completion(.success(imageInfo))
+                completion(.success(urlFullString))
             }
         }
     }
     
 //    MARK: TODO remove unnecessary info in imageInfo, image id is never used
 //    upload item image url to user ref
-    func uploadItemImageUrl(_ uid: String, _ itemId: String, _ imageInfo: [Dictionary<String,String>]?, completion: @escaping(Result<Bool, Error>) -> ()) {
+    func uploadItemImageUrl(_ uid: String, _ itemId: String, _ imageUrlString: String?, completion: @escaping(Result<Bool, Error>) -> ()) {
         
-        var counter = 0
-        let group = DispatchGroup()
-        var values = [Dictionary<String,String>]()
+//        var counter = 0
+//        let group = DispatchGroup()
+//        var values = [Dictionary<String,String>]()
 
-        group.enter()
+//        group.enter()
         
-        guard let imageInfo = imageInfo else {
+        guard let urlString = imageUrlString else {
             completion(.success(true))
             return
         }
         
-        var urlArray = [String]()
+//        var urlArray = [String]()
+        
+//        var urlFullString: String?
             
-        imageInfo.forEach { (dict) in
+//        imageInfo.forEach { (dict) in
 
 //            create key for path
 //            guard let key = dict.keys.first else {
@@ -251,15 +254,17 @@ class Service: NSObject {
 //            }
             
 //            create url for value
-            guard let urlString = dict.values.first else {
-                completion(.failure(CustomError.foundNil))
-                return
-            }
+//            guard let urlString = dict.values.first else {
+//                completion(.failure(CustomError.foundNil))
+//                return
+//            }
             
-            urlArray.append(urlString)
+//            urlArray.append(urlString)
             
-            let dict = ["image_url" : urlString]
-            values.append(dict)
+//            urlFullString?.append(urlString)
+            
+//            let dict = ["image_url" : urlString]
+//            values.append(dict)
 //            let dict2 = []
             
 //            REF_ITEMS.child(itemId).child("image_url").updateChildValues([key: urlString]) { (err, ref) in
@@ -271,31 +276,42 @@ class Service: NSObject {
 //                }
 
 //                when all urls are uploaded, exit group
-                counter += 1
-                if counter == imageInfo.count {
-                    group.leave()
-                }
+//                counter += 1
+//                if counter == imageInfo.count {
+//                    group.leave()
+//                }
 //            }
+//        }
+        
+        REF_ITEMS.child(itemId).updateChildValues(["image_url" : urlString]) { (err, ref) in
+            
+//            handle error
+            if let error = err {
+                completion(.failure(error))
+                return
+            }
+            completion(.success(true))
+//            group.leave()
         }
         
-        group.notify(queue: .main) {
-            
-//            let urlDict = []
-            let uploadValues = ["image_url" : values]
-            
-            
-//            upload values
-            REF_ITEMS.child(itemId).updateChildValues(uploadValues) { (err, ref) in
-                
-//                handle error
-                if let error = err {
-                    completion(.failure(error))
-                    return
-                }
-                
-                completion(.success(true))
-            }
-        }
+//        group.notify(queue: .main) {
+//
+////            let urlDict = []
+////            let uploadValues = ["image_url" : values]
+//
+//
+////            upload values
+//            REF_ITEMS.child(itemId).updateChildValues(uploadValues) { (err, ref) in
+//
+////                handle error
+//                if let error = err {
+//                    completion(.failure(error))
+//                    return
+//                }
+//
+//                completion(.success(true))
+//            }
+//        }
     }
     
     func uploadKeywords(_ uid: String, _ itemId: String, _ item: ItemForUpload, completion: @escaping(Result<Bool,Error>) -> ()) {
@@ -405,46 +421,58 @@ class Service: NSObject {
         }
     }
     
-    func fetchItem() {
-        guard let url = URL(string: "https://itemfinder-c0570.firebaseio.com/items.json")
-            else {
-                print("DEBUG error creating url")
-            return }
-        
-        URLSession.shared.dataTask(with: url) { (data, resp, err) in
+//    func fetchItem() {
+//        guard let url = URL(string: "https://itemfinder-c0570.firebaseio.com/items.json")
+//            else {
+//                print("DEBUG error creating url")
+//            return }
+//
+//        URLSession.shared.dataTask(with: url) { (data, resp, err) in
+//
+////            handle error
+//            if let error = err {
+//                print("DEBUG error fetiching JSON from database", error.localizedDescription)
+//                return
+//            }
+//
+//            guard let data = data else { print("DEBUG error creating data"); return }
+//
+//            guard let dataString = String(data: data, encoding: .utf8) else { return }
+//
+//            print("DEBUG", dataString)
+//
+//            do {
+//                let decoder = JSONDecoder()
+//                decoder.keyDecodingStrategy = .convertFromSnakeCase
+//                let items = try decoder.decode([String : Item].self, from: data)
+//                print("DEBUG skapade item med id", items.first?.key)
+//                let key = items.first?.key
+//                items.forEach { (dict) in
+//                    print("DEBUG ", dict.value.title)
+//                    let item: Item?
+//                    item = dict.value
+//                    print("DEBUG kat", item?.category)
+////                    print("DEBUG titel", item?.image_url?[0].image_url)
+//            }
+//
+////                let items = try JSONDecoder().decode([String : Item], from: data)
+////                print("DEBUG Item", items.description?.title)
+//
+//            } catch let error {
+//                print("DEBUG failed to create Item", error)
+//            }
+//
+//        }.resume()
+//    }
+    
+    func fetcCurrentUserItems(_ uid: String) {
+        USER_REF.child(uid).child("items").observeSingleEvent(of: .value) { (snapshot) in
             
-//            handle error
-            if let error = err {
-                print("DEBUG error fetiching JSON from database", error.localizedDescription)
-                return
+            for child in snapshot.children.allObjects as! [DataSnapshot] {
+                print("DEBUG", child.value as! Dictionary<String,String>)
             }
             
-            guard let data = data else { print("DEBUG error creating data"); return }
-            
-            guard let dataString = String(data: data, encoding: .utf8) else { return }
-            
-            print("DEBUG", dataString)
-            
-            do {
-                let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
-                let items = try decoder.decode([String : Item].self, from: data)
-                print("DEBUG skapade item med id", items.first?.key)
-                let key = items.first?.key
-                items.forEach { (dict) in
-                    print("DEBUG ", dict.value.title)
-                    let item: Item?
-                    item = dict.value
-//                    print("DEBUG titel", item?.image_url?[0].image_url)
-            }
-                
-//                let items = try JSONDecoder().decode([String : Item], from: data)
-//                print("DEBUG Item", items.description?.title)
-                
-            } catch let error {
-                print("DEBUG failed to create Item", error)
-            }
-            
-        }.resume()
+//            print("DEBUG snap", snapshot.value)
+        }
     }
 }
