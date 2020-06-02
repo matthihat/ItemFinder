@@ -48,6 +48,16 @@ struct ItemForUpload {
                 return
             }
         }
+        
+        Service.shared.uploadItemOwnerUid(itemId, uid) { (result) in
+            
+            switch result {
+            case .success(_):
+                Void()
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
             
         Service.shared.uploadItemTitle(itemId, item) { (result) in
         
@@ -70,6 +80,16 @@ struct ItemForUpload {
         }
     
         Service.shared.uploadItemIdToUser(uid, itemId) { (result) in
+            
+            switch result {
+            case .success(_):
+                Void()
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
+        Service.shared.uploadItemCategory(itemId, category: category) { (result) in
             
             switch result {
             case .success(_):

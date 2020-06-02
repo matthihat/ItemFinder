@@ -17,29 +17,29 @@ class AddItemView: UIView {
         return button
     }()
     
-    lazy var descriptionTitleLabel: UILabel = {
+    let descriptionTitleLabel: UILabel = {
         let label = UILabel.textLabel(titleLabel: "Add item", ofFontSize: 25)
         return label
     }()
     
-    lazy var isForSaleLabel: UILabel = {
+    let isForSaleLabel: UILabel = {
         let label = UILabel.textLabel(titleLabel: "Is for sale", ofFontSize: 18)
         return label
     }()
     
-    lazy var isForSaleSwitch: UISwitch = {
+    let isForSaleSwitch: UISwitch = {
         let selector = UISwitch()
         selector.isOn = false
         selector.addTarget(self, action: #selector(handleItemIsForSale(_:)), for: .valueChanged)
         return selector
     }()
     
-    lazy var titleTextField: UITextField = {
+    let titleTextField: UITextField = {
         let textField = UITextField.textField(withPlaceHolder: "Title")
         return textField
     }()
     
-    lazy var keywordTextField: UITextField = {
+    let keywordTextField: UITextField = {
         let textField = UITextField.textField(withPlaceHolder: "Keywords")
         return textField
     }()

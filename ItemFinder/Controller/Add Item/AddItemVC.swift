@@ -222,6 +222,7 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
                 case .success(_):
                     print("DEBUG success!")
                 case .failure(let error):
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
                     print("DEBUG error uploading info", error.localizedDescription)
                 }
             }
@@ -245,11 +246,11 @@ extension AddItemVC: CategoryPickerDelegate {
 //        assign local variable which category was selected
         switch selectedCategory {
         case SportCategories.biking.rawValue:
-            self.selectedCategory = selectedCategory
+            self.selectedCategory = SportCategories.biking.dbRef
         case SportCategories.running.rawValue:
-            self.selectedCategory = selectedCategory
+            self.selectedCategory = SportCategories.running.dbRef
         case SportCategories.skiing.rawValue:
-            self.selectedCategory = selectedCategory
+            self.selectedCategory = SportCategories.skiing.dbRef
         default:
             Void()
         }

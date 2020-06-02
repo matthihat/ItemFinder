@@ -16,6 +16,11 @@ let STORAGE = Storage.storage().reference()
 let STORAGE_IMAGE = STORAGE.child("image")
 let REF_KEYWORD = REF.child("keyword_item_id")
 let REF_ITEM_FOR_SALE = REF.child("item_for_sale")
+let REF_CATEGORY = REF.child("category")
+let REF_CATEGORY_SPORT = REF_CATEGORY.child("sport")
+let REF_BIKING = REF_CATEGORY_SPORT.child(SportCategories.biking.dbRef)
+let REF_RUNNING = REF_CATEGORY_SPORT.child(SportCategories.running.dbRef)
+let REF_SKIING = REF_CATEGORY_SPORT.child(SportCategories.skiing.dbRef)
 
 enum CustomError: Error {
     case foundNil
@@ -26,6 +31,10 @@ enum SportCategories: String {
     case biking = "Biking"
     case running = "Running"
     case skiing = "Skiing"
+    
+    var dbRef: String {
+        return self.rawValue.lowercased()
+    }
 }
 
 

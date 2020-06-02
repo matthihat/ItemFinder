@@ -71,6 +71,19 @@ class Service: NSObject {
         }
     }
     
+    func uploadItemOwnerUid(_ itemId: String, _ uid: String, completion: @escaping(Result<Bool, Error>) -> ()) {
+        REF_ITEMS.child(itemId).updateChildValues(["owner_uid" : uid]) { (err, ref) in
+            
+//            handle error
+            if let error = err {
+                completion(.failure(error))
+                return
+            }
+            
+            completion(.success(true))
+        }
+    }
+    
 //    upload title of item
     func uploadItemTitle(_ itemId: String, _ item: ItemForUpload, completion: @escaping(Result<Bool, Error>) ->()) {
         
@@ -113,6 +126,38 @@ class Service: NSObject {
             }
             
             completion(.success(true))
+        }
+    }
+    
+//    upload item category
+    func uploadItemCategory(_ itemId: String, category: String?, completion: @escaping(Result<Bool, Error>) -> ()) {
+        
+//        skip upload if no value was provided, return from function
+        guard let category = category else {
+            completion(.success(true))
+            return
+        }
+        
+//        upload category to item ref
+        REF_ITEMS.child(itemId).updateChildValues(["category" : category]) { (err, ref) in
+            
+//            handle error
+            if let error = err {
+                completion(.failure(error))
+                return
+            }
+            
+//            upload itemId to cetegory ref
+            REF_CATEGORY_SPORT.child(category).updateChildValues([itemId : 1]) { (err, ref) in
+                
+//                handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+                
+                completion(.success(true))
+            }
         }
     }
     
@@ -328,12 +373,12 @@ class Service: NSObject {
                 }
                 
 //                upload info to item for sale ref
-                let values = [
-                    "item_id" : itemId,
-                    "user_uid" : uid
-                ]
+//                let values = [
+//                    "item_id" : itemId,
+//                    "user_uid" : uid
+//                ]
                 
-                REF_ITEM_FOR_SALE.childByAutoId().updateChildValues(values) { (err, ref) in
+                REF_ITEM_FOR_SALE.updateChildValues([itemId: 1]) { (err, ref) in
                     
 //                    handle error
                     if let error = err {
