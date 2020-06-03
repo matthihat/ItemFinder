@@ -44,6 +44,20 @@ class LoginView: UIView {
         return button
     }()
     
+    let dontHaveAnAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let attributedTitle = NSMutableAttributedString(string: "Don't have an account?   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.black])
+        
+        attributedTitle.append(NSAttributedString(string: "Sign Up", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]))
+        
+        button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
+        
+        button.setAttributedTitle(attributedTitle, for: .normal)
+        
+        return button
+    }()
+    
     var delegate: LoginDelegate?
     
 //    MARK: - Init
@@ -66,6 +80,10 @@ class LoginView: UIView {
         addSubview(stack)
         stack.centerX(inView: self)
         stack.anchor(top: safeAreaLayoutGuide.topAnchor, left: safeAreaLayoutGuide.leftAnchor, right: safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        
+        addSubview(dontHaveAnAccountButton)
+        dontHaveAnAccountButton.centerX(inView: self)
+        dontHaveAnAccountButton.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, height: 32)
     }
     
     required init?(coder: NSCoder) {
@@ -75,6 +93,10 @@ class LoginView: UIView {
 //    MARK: - Handlers
     @objc func handleLogin() {
         delegate?.didPressLogin(emailTextField, passwordTextField)
+    }
+    
+    @objc func handleShowSignUp() {
+        delegate?.didPressDontHaveAccountButton(dontHaveAnAccountButton)
     }
 }
 
@@ -89,6 +111,8 @@ class LoginVC: UIViewController {
         configureView()
         
         setDelegates()
+        
+        navigationController?.isNavigationBarHidden = true
     }
     
     func configureView() {
@@ -103,6 +127,7 @@ class LoginVC: UIViewController {
 }
 
 extension LoginVC: LoginDelegate {
+    
     func didPressLogin(_ emailTextField: UITextField, _ passwordTextField: UITextField) {
         
         SVProgressHUD.show()
@@ -130,6 +155,12 @@ extension LoginVC: LoginDelegate {
                 
                 self.dismiss(animated: true, completion: nil)
             }
+    }
+    
+    func didPressDontHaveAccountButton(_ button: UIButton) {
+        let signUpVC = SignUpVC()
+        signUpVC.modalPresentationStyle = .fullScreen
+        present(signUpVC, animated: true, completion: nil)
     }
 }
 

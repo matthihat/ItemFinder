@@ -10,10 +10,12 @@ import UIKit
 
 protocol SignUpDelegate: class {
     func handleSignUpPressed(for view: SignUpView)
+    func alreadyHaveAnAccountButton(_ button: UIButton)
 }
 
 protocol LoginDelegate {
     func didPressLogin(_ emailTextField: UITextField, _ passwordTextField: UITextField)
+    func didPressDontHaveAccountButton(_ button: UIButton)
 }
 
 protocol AddItemVCDelegate: class {

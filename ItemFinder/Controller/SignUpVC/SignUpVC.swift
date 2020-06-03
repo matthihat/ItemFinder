@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SVProgressHUD
+import CoreLocation
 
 class SignUpView: UIView {
     
@@ -31,6 +32,11 @@ class SignUpView: UIView {
         return view
     }()
     
+    private lazy var locationInputView: UIView = {
+        let view = UIView.inputContainerView(button: locationButton, label: locationLabel)
+        return view
+    }()
+    
     let emailTextField: UITextField = {
         let textField = UITextField.textField(withPlaceHolder: "Email",
                                               isSecureTextEntry: false)
@@ -49,11 +55,37 @@ class SignUpView: UIView {
         return textField
     }()
     
+    let locationLabel: UILabel = {
+        let label = UILabel.textLabel(titleLabel: "Location", ofFontSize: 16)
+        return label
+    }()
+    
+    let locationButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(#imageLiteral(resourceName: "baseline_explore_black_24dp-1"), for: .normal)
+        button.tintColor = .systemBlue
+       return button
+    }()
+    
     lazy var signUpButton: AuthButton = {
         let button = AuthButton(type: .system)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.setTitle("Sign Up", for: .normal)
         button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
+        return button
+    }()
+    
+    private let alreadyHaveAnAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let attributedTitle = NSMutableAttributedString(string: "Already have an account?   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.black])
+        
+        attributedTitle.append(NSAttributedString(string: "Login", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]))
+        
+        button.setAttributedTitle(attributedTitle, for: .normal)
+        
+        button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
+        
         return button
     }()
     
@@ -75,7 +107,7 @@ class SignUpView: UIView {
     func configureUI() {
         backgroundColor = .backgroundYellow
         
-        let stack = UIStackView(arrangedSubviews: [emailContainerView, fullnameContainerView, passwordContainerView, signUpButton])
+        let stack = UIStackView(arrangedSubviews: [emailContainerView, fullnameContainerView, passwordContainerView, locationInputView, signUpButton])
         stack.axis = .vertical
         stack.distribution = .fillEqually
         stack.spacing = 24
@@ -83,6 +115,10 @@ class SignUpView: UIView {
         addSubview(stack)
         stack.centerX(inView: self)
         stack.anchor(top: safeAreaLayoutGuide.topAnchor, left: safeAreaLayoutGuide.leftAnchor, right: safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        
+        addSubview(alreadyHaveAnAccountButton)
+        alreadyHaveAnAccountButton.centerX(inView: self)
+        alreadyHaveAnAccountButton.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, height: 32)
     }
     
 //    MARK: Handlers
@@ -90,6 +126,10 @@ class SignUpView: UIView {
 
         delegate?.handleSignUpPressed(for: self)
         
+    }
+    
+    @objc func handleShowLogin() {
+        delegate?.alreadyHaveAnAccountButton(alreadyHaveAnAccountButton)
     }
         
 }
@@ -142,7 +182,7 @@ extension SignUpVC: SignUpDelegate {
             Service.shared.createUserWithEmail(email: email, fullname: fullname, password: password) { (result) in
 
                 switch result {
-                case .success(let userUid):
+                case .success(_):
                     SVProgressHUD.dismiss()
                     group.leave()
 
@@ -158,6 +198,8 @@ extension SignUpVC: SignUpDelegate {
         }
     }
     
-    
+    func alreadyHaveAnAccountButton(_ button: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 }

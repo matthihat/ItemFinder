@@ -122,6 +122,28 @@ static func inputContainerView(image: UIImage, textField: UITextField) -> UIView
     
     return view
     }
+    
+    static func inputContainerView(button: UIButton, label: UILabel) -> UIView {
+    let view = UIView()
+        
+    view.addSubview(button)
+    button.alpha = 0.87
+    button.centerY(inView: view)
+    button.anchor(left: view.leftAnchor, paddingLeft: 8, width: 24, height: 24)
+    
+    view.addSubview(label)
+    label.centerY(inView: view)
+    label.anchor(left: button.rightAnchor, bottom: view.bottomAnchor,
+                     right: view.rightAnchor, paddingLeft: 8, paddingBottom: 8)
+    
+    let separatorView = UIView()
+    separatorView.backgroundColor = .darkText
+    view.addSubview(separatorView)
+    separatorView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor,
+                         right: view.rightAnchor, paddingLeft: 8, height: 0.75)
+
+    return view
+    }
 
     static func inputContainerView(titleText: String, textView: UITextView) -> UIView {
         let view = UIView()
