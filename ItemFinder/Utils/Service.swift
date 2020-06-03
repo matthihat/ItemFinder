@@ -274,7 +274,7 @@ class Service: NSObject {
 //                    completion(.failure(error))
 //                    return
 //                }
-
+        
 //                when all urls are uploaded, exit group
 //                counter += 1
 //                if counter == imageInfo.count {
@@ -465,14 +465,27 @@ class Service: NSObject {
 //        }.resume()
 //    }
     
-    func fetcCurrentUserItems(_ uid: String) {
+    func fetcCurrentUserItems(_ uid: String, completion: @escaping(Result<Item,Error>) -> Void) {
+        
+//        grab item id from user ref
         USER_REF.child(uid).child("items").observeSingleEvent(of: .value) { (snapshot) in
             
-            for child in snapshot.children.allObjects as! [DataSnapshot] {
-                print("DEBUG", child.value as! Dictionary<String,String>)
+            guard let allChildren = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            allChildren.forEach { (snap) in
+                
+                let itemId = snap.key
+                
+                REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (itemSnap) in
+                    
+                    guard let dict = itemSnap.value as? [String:Any] else { return }
+                    
+                    let item = Item(id: itemId, dict: dict)
+                    completion(.success(item))
+                }
             }
             
-//            print("DEBUG snap", snapshot.value)
+            
         }
     }
 }

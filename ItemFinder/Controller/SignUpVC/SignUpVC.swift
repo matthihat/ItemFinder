@@ -131,34 +131,20 @@ extension SignUpVC: SignUpDelegate {
             let fullname = view.fullnameTextField.text,
             let password = view.passwordTextField.text?.lowercased()
             else { return }
-        
-        
-//
-//        var uid: String?
-////
+
         SVProgressHUD.show()
-////
+
         let group = DispatchGroup()
         group.enter()
-//        group.leave()
-//        group.notify(queue: .main) {
-//            SVProgressHUD.show()
-//        }
-////
+
         DispatchQueue.main.async {
 //            SVProgressHUD.show()
             Service.shared.createUserWithEmail(email: email, fullname: fullname, password: password) { (result) in
 
                 switch result {
                 case .success(let userUid):
-//                    uid = userUid
-//                    group.leave()
                     SVProgressHUD.dismiss()
                     group.leave()
-//                    let main = MainItemCollectionView()
-//                    main.uid = uid
-//                    self.dismiss(animated: true, completion: nil)
-                    
 
                 case .failure(let error):
                     SVProgressHUD.dismiss()
@@ -168,12 +154,8 @@ extension SignUpVC: SignUpDelegate {
         }
 
         group.notify(queue: .main) {
-//            let main = MainItemCollectionView()
-//            main.uid = uid
             self.dismiss(animated: true, completion: nil)
-//            UIApplication.shared.keyWindow?.rootViewController = main
         }
-//
     }
     
     

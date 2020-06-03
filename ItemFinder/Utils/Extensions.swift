@@ -157,6 +157,12 @@ static func inputContainerView(image: UIImage, textField: UITextField) -> UIView
     }
 }
 
+extension UIStackView {
+    func addMultipleSubviews(_ views: UIView...) {
+        views.forEach{addSubview($0)}
+    }
+}
+
 extension UIViewController {
     func prefersLargeNCTitles() {
         self.navigationController?.navigationBar.prefersLargeTitles = true

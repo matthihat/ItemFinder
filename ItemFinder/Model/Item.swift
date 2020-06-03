@@ -8,71 +8,63 @@
 
 import Foundation
 
-//class Item: NSObject {
-//    var id: String
-//    var title: String?
-//    var itemDescription: String?
-//    var keywords: [String]?
-//    var category: String?
-//    var imageUrl1: String?
-//    var imageUrl2: String?
-//    var imageUrl3: String?
-//    var isForSale: Bool?
-//
-//    init(id: String, dict: Dictionary<String?, String?>, isForSale: Bool?) {
-//        self.id = id
-//
-//        if let title = dict["title"] {
-//            self.title = title
-//        }
-//
-//        if let itemDescription = dict["description"] {
-//            self.itemDescription = itemDescription
-//        }
-//
-//        if let category = dict["category"] {
-//            self.category = category
-//        }
-//
-//        if let imageUrl1 = dict["imageUrl1"] {
-//            self.imageUrl1 = imageUrl1
-//        }
-//
-//        if let imageUrl2 = dict["imageUrl2"] {
-//           self.imageUrl2 = imageUrl2
-//        }
-//
-//        if let imageUrl3 = dict["imageUrl3"] {
-//            self.imageUrl3 = imageUrl3
-//        }
-//
-//
-//        self.isForSale = isForSale
-//    }
-//}
-
-struct Root: Decodable {
-    var items: [String : Item]?
-//    var category: String?
-//    var image_url: [ImageUrl]?
-//    var is_for_sale: Bool?
-}
-
-struct Item: Decodable {
-    var id: String?
+struct Item {
+    var id: String
     var title: String?
-    var description: String?
-    var isForSale: Bool?
+    var itemDescription: String?
     var keywords: String?
     var category: String?
-    var imageUrl: [ImageUrl]?
+    var imageUrl: String?
+    var isForSale: Bool?
+
+    init(id: String, dict: Dictionary<String?, Any?>) {
+        self.id = id
+
+        if let title = dict["title"] as? String {
+            self.title = title
+        }
+
+        if let itemDescription = dict["description"] as? String {
+            self.itemDescription = itemDescription
+        }
+
+        if let category = dict["category"] as? String {
+            self.category = category
+        }
+
+        if let imageUrl = dict["image_url"] as? String {
+            self.imageUrl = imageUrl
+        }
+
+        if let isForSale = dict["is_for_sale"] as? Bool {
+            self.isForSale = isForSale
+        }
+
+    }
 }
 
-struct Description: Decodable {
-    var description: String?
-    var title: String?
-}
-
-struct ImageUrl: Decodable {
-    var image_url: String?
-}
+//struct Root: Decodable {
+//    var items: [String : Item]?
+////    var category: String?
+////    var image_url: [ImageUrl]?
+////    var is_for_sale: Bool?
+//}
+//
+//struct Item: Decodable {
+//    var id: String?
+//    var title: String?
+//    var description: String?
+//    var isForSale: Bool?
+//    var keywords: String?
+//    var category: String?
+//    var imageUrl: [ImageUrl]?
+//}
+//
+//struct Description: Decodable {
+//    var description: String?
+//    var title: String?
+//}
+//
+//struct ImageUrl: Decodable {
+//    var image_url: String?
+//}

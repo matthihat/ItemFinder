@@ -26,6 +26,8 @@ class MainItemCollectionView: UICollectionViewController {
     var mainItemCVDataSource: MainItemCVDataSource?
     
     var uid: String?
+    
+    var selectedIndexPath: IndexPath?
 
 
 //  MARK: - Life cycle
@@ -39,8 +41,6 @@ class MainItemCollectionView: UICollectionViewController {
         configureCollectionViewDataSource()
 
         configureCollectionView()
-        
-        
         
         configureRefreshControl()
     }
@@ -78,7 +78,21 @@ class MainItemCollectionView: UICollectionViewController {
 //    delegate methods
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print("DEBUG selected", indexPath.row)
+//        "deselect" selectedIndexPath if it was already selected
+        switch selectedIndexPath {
+        case nil:
+            selectedIndexPath = indexPath
+        default:
+            if selectedIndexPath! == indexPath {
+                selectedIndexPath = nil
+            } else {
+                selectedIndexPath = indexPath
+            }
+        }
+        
+//        animate collectionview when cell was selected
+        collectionView.performBatchUpdates({
+        }, completion: nil)
         
     }
     
@@ -90,9 +104,10 @@ class MainItemCollectionView: UICollectionViewController {
     
     @objc func handleReloadData() {
         
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        mainItemCVDataSource?.fetchUserItems()
         
-        Service.shared.fetcCurrentUserItems(uid)
+//        when nil, default size for cell is set
+        selectedIndexPath = nil
         
         self.refreshControl.endRefreshing()
             
@@ -123,7 +138,21 @@ extension MainItemCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: view.frame.width, height: 100)
+        let expandedSize = CGSize(width: view.frame.width, height: 220)
+        let closedSize = CGSize(width: view.frame.width, height: 160)
+        let ip = indexPath
+        
+//      return size depending on that cell was selected or not
+        if selectedIndexPath != nil {
+            if ip == selectedIndexPath! {
+                return expandedSize
+            } else {
+                return closedSize
+            }
+        } else {
+            return closedSize
+        }
+        
     }
 
 }
