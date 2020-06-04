@@ -9,6 +9,7 @@
 import UIKit
 
 protocol SignUpDelegate: class {
+    func handleGetLocationPressed(_ button: UIButton)
     func handleSignUpPressed(for view: SignUpView)
     func alreadyHaveAnAccountButton(_ button: UIButton)
 }

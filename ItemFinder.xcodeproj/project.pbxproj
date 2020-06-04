@@ -28,6 +28,8 @@
 		1843248A246F1B2500FB98E6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18432489246F1B2500FB98E6 /* Extensions.swift */; };
 		1843248C246F2FB400FB98E6 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843248B246F2FB400FB98E6 /* ProfileVC.swift */; };
 		1843248E246F4A3A00FB98E6 /* AddItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843248D246F4A3A00FB98E6 /* AddItemVC.swift */; };
+		184A259E2489892C0013C122 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184A259D2489892C0013C122 /* SignUpView.swift */; };
+		184A25A024898C250013C122 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184A259F24898C250013C122 /* LocationManager.swift */; };
 		188B4ACA2471839500C39B0C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 188B4AC92471839500C39B0C /* GoogleService-Info.plist */; };
 		188B4ACC247185AA00C39B0C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 188B4ACB247185A900C39B0C /* GoogleService-Info.plist */; };
 		188B4ACF2471949000C39B0C /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188B4ACE2471949000C39B0C /* SignUpVC.swift */; };
@@ -88,6 +90,8 @@
 		18432489246F1B2500FB98E6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1843248B246F2FB400FB98E6 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		1843248D246F4A3A00FB98E6 /* AddItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemVC.swift; sourceTree = "<group>"; };
+		184A259D2489892C0013C122 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpView.swift; path = View/SignUpView.swift; sourceTree = "<group>"; };
+		184A259F24898C250013C122 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = Utils/LocationManager.swift; sourceTree = "<group>"; };
 		188B4AC92471839500C39B0C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		188B4ACB247185A900C39B0C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		188B4ACE2471949000C39B0C /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
@@ -170,6 +174,8 @@
 				18432455246EFA7700FB98E6 /* Main.storyboard */,
 				1843245A246EFA7A00FB98E6 /* LaunchScreen.storyboard */,
 				1843245D246EFA7A00FB98E6 /* Info.plist */,
+				184A259D2489892C0013C122 /* SignUpView.swift */,
+				184A259F24898C250013C122 /* LocationManager.swift */,
 				188B4ACB247185A900C39B0C /* GoogleService-Info.plist */,
 			);
 			path = ItemFinder;
@@ -561,8 +567,10 @@
 			files = (
 				18432481246EFAA300FB98E6 /* Item.swift in Sources */,
 				188B4ACF2471949000C39B0C /* SignUpVC.swift in Sources */,
+				184A25A024898C250013C122 /* LocationManager.swift in Sources */,
 				183DC317247452E800422D8D /* LoginVC.swift in Sources */,
 				183D27822477236D007708C8 /* ItemPhotoCVCell.swift in Sources */,
+				184A259E2489892C0013C122 /* SignUpView.swift in Sources */,
 				18432450246EFA7700FB98E6 /* AppDelegate.swift in Sources */,
 				183E352B24730DA300D0C20B /* Protocols.swift in Sources */,
 				18432452246EFA7700FB98E6 /* SceneDelegate.swift in Sources */,

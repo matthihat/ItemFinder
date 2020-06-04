@@ -154,5 +154,4 @@ extension MainItemCollectionView: UICollectionViewDelegateFlowLayout {
         }
         
     }
-
 }
