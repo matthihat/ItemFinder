@@ -18,6 +18,8 @@ class SignUpVC: UIViewController {
 //    MARK: - Properties
     let signUpView = SignUpView()
     private let locationManager = LocationManager()
+    private var latitude: Double?
+    private var longitude: Double?
     
 
 //    MARK: - Life cycle
@@ -51,16 +53,19 @@ extension SignUpVC: SignUpDelegate {
             print("DEBUG Error in \(#function): exposedLocation is nil")
             return
         }
-        
+
         self.locationManager.getPlace(for: exposedLocation) { (placemark) in
             guard let placemark = placemark else { return }
             
-            if let county = placemark.administrativeArea {
-                print("DEBUG admin area", county)
-            }
+            let latitude: Double = exposedLocation.coordinate.latitude
+            let longitude: Double = exposedLocation.coordinate.longitude
             
-            if let city = placemark.locality {
-                print("DEBUG city", city)
+            self.latitude = latitude
+            self.longitude = longitude
+            
+            if let administrativeArea = placemark.administrativeArea,
+                let city = placemark.locality {
+                self.signUpView.showLocationLabels(city, administrativeArea)
             }
         }
 
@@ -82,8 +87,8 @@ extension SignUpVC: SignUpDelegate {
         group.enter()
 
         DispatchQueue.main.async {
-//            SVProgressHUD.show()
-            Service.shared.createUserWithEmail(email: email, fullname: fullname, password: password) { (result) in
+            
+            Service.shared.createUserWithEmail(email: email, fullname: fullname, password: password, latitude: self.latitude, longitude: self.longitude) { (result) in
 
                 switch result {
                 case .success(_):
@@ -96,6 +101,8 @@ extension SignUpVC: SignUpDelegate {
                 }
             }
         }
+            
+
 
         group.notify(queue: .main) {
             self.dismiss(animated: true, completion: nil)

@@ -36,9 +36,7 @@ extension LocationManager: CLLocationManagerDelegate {
         case .restricted, .denied:
             break
         case .authorizedAlways:
-            print("DEBUG always")
-            locationManager.startUpdatingLocation()
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            Void()
         case .authorizedWhenInUse:
             locationManager.requestAlwaysAuthorization()
         @unknown default:

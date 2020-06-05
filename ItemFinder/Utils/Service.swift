@@ -14,7 +14,9 @@ class Service: NSObject {
     
     static let shared = Service()
     
-    func createUserWithEmail(email: String, fullname: String, password: String, completion: @escaping(Result<String,Error>) -> ()) {
+    func createUserWithEmail(email: String, fullname: String, password: String, latitude: Double?, longitude: Double?, completion: @escaping(Result<String,Error>) -> ()) {
+        
+        var userInfoUploadValues = [String:Any]()
         
         Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
             if let error = err {
@@ -28,7 +30,14 @@ class Service: NSObject {
                     return
                 }
             
-            let userInfoUploadValues = ["fullname":fullname]
+            if let lat = latitude,
+                let long = longitude {
+                userInfoUploadValues = ["fullname":fullname,
+                                        "latitude": lat,
+                                        "longitude": long]
+            } else {
+                userInfoUploadValues = ["fullname":fullname]
+                }
             
             USER_REF.child(uid).child("user_info").updateChildValues(userInfoUploadValues) { (err, ref) in
                 
