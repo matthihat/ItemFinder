@@ -28,11 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     func createMainNC() -> UINavigationController {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.itemSize = CGSize(width: 100, height: 100)
         let flowLayout = UICollectionViewFlowLayout()
-//        flowLayout.scrollDirection = .horizontal
-//        flowLayout.itemSize = CGSize(width: 120, height: 120)
         let mainCV = MainItemCollectionView(collectionViewLayout: flowLayout)
         mainCV.title = "Main"
         mainCV.tabBarItem = UITabBarItem(title: "Items", image: #imageLiteral(resourceName: "baseline_category_black_36dp"), tag: 0)

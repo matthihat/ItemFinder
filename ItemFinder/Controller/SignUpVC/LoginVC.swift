@@ -39,7 +39,7 @@ class LoginView: UIView {
     lazy var loginButton: AuthButton = {
         let button = AuthButton(type: .system)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.setTitle("Sign Up", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         return button
     }()
@@ -49,7 +49,7 @@ class LoginView: UIView {
         
         let attributedTitle = NSMutableAttributedString(string: "Don't have an account?   ", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.black])
         
-        attributedTitle.append(NSAttributedString(string: "Login", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]))
+        attributedTitle.append(NSAttributedString(string: "Sign up", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor : UIColor.systemBlue]))
         
         button.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
         
@@ -103,7 +103,8 @@ class LoginView: UIView {
 class LoginVC: UIViewController {
 //    MARK: - Properties
     let loginView = LoginView()
-
+    let signUpVC = SignUpVC()
+    
 //    MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,6 +124,7 @@ class LoginVC: UIViewController {
         loginView.emailTextField.delegate = self
         loginView.passwordTextField.delegate = self
         loginView.delegate = self
+        
     }
 }
 
@@ -158,9 +160,8 @@ extension LoginVC: LoginDelegate {
     }
     
     func didPressDontHaveAccountButton(_ button: UIButton) {
-        let signUpVC = SignUpVC()
-        signUpVC.modalPresentationStyle = .fullScreen
-        present(signUpVC, animated: true, completion: nil)
+
+        navigationController?.pushViewController(signUpVC, animated: true)
     }
 }
 

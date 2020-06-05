@@ -20,7 +20,6 @@ class SignUpVC: UIViewController {
     private let locationManager = LocationManager()
     private var latitude: Double?
     private var longitude: Double?
-    
 
 //    MARK: - Life cycle
     override func viewDidLoad() {
@@ -105,12 +104,14 @@ extension SignUpVC: SignUpDelegate {
 
 
         group.notify(queue: .main) {
+            
             self.dismiss(animated: true, completion: nil)
         }
     }
     
     func alreadyHaveAnAccountButton(_ button: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
+        
     }
     
 }
