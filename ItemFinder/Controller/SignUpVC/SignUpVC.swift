@@ -65,7 +65,7 @@ class SignUpVC: UIViewController {
                 if let administrativeArea = placemarks.administrativeArea,
                     let city = placemarks.locality {
 //                    show location in view
-                    self.signUpView.showLocationLabels(city, administrativeArea)
+                    self.signUpView.showLocationLabelsAndAnimateLocationButton(city, administrativeArea)
                 }
             case .failure(let error):
                 SVProgressHUD.showError(withStatus: error.localizedDescription)
@@ -84,38 +84,6 @@ extension SignUpVC: SignUpDelegate {
         
 //        get user loaction placemarks, admin. area and city
         getUserLocationPlacemarks()
-        
-//        get location placemarks
-//        self.locationManager.getPlace { (result) in
-//            
-//            switch result {
-//            case .success(let placemarks):
-//                
-////                get placemark properties
-//                if let administrativeArea = placemarks.administrativeArea,
-//                    let city = placemarks.locality {
-////                    show location in view
-//                    self.signUpView.showLocationLabels(city, administrativeArea)
-//                }
-//            case .failure(let error):
-//                SVProgressHUD.showError(withStatus: error.localizedDescription)
-//            }
-//        }
-        
-//        self.locationManager.exposedLocation
-
-//        self.locationManager.getPlace(for: exposedLocation) { (placemark) in
-//            guard let placemark = placemark else { return }
-            
-
-            
-//            if let administrativeArea = placemark.administrativeArea,
-//                let city = placemark.locality {
-//                self.signUpView.showLocationLabels(city, administrativeArea)
-//            }
-//        }
-
-        
     }
     
     func handleSignUpPressed(for view: SignUpView) {

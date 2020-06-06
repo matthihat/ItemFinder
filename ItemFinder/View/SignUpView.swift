@@ -139,11 +139,26 @@ class SignUpView: UIView {
         alreadyHaveAnAccountButton.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, height: 32)
     }
     
-    func showLocationLabels(_ city: String, _ administrativeArea: String) {
+    func showLocationLabelsAndAnimateLocationButton(_ city: String, _ administrativeArea: String) {
+        
+        animateLocationButton()
+        
         cityLabelLabel.text = city
         cityLabelLabel.alpha = 1
         administrativeAreaLabel.text = administrativeArea
         administrativeAreaLabel.alpha = 1
+
+    }
+    
+//    animate location button to show green tint
+    func animateLocationButton() {
+        self.locationButton.alpha = 0
+        self.locationButton.tintColor = .systemGreen
+        self.locationButton.setTitle("✓", for: .normal)
+        self.locationButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+        UIView.animate(withDuration: 1) {
+            self.locationButton.alpha = 1
+        }
     }
     
 //    MARK: Handlers
@@ -160,4 +175,17 @@ class SignUpView: UIView {
         delegate?.alreadyHaveAnAccountButton(alreadyHaveAnAccountButton)
     }
         
+}
+
+extension UIImage {
+func inverseImage(cgResult: Bool) -> UIImage? {
+    let coreImage = self.ciImage
+    guard let filter = CIFilter(name: "CIColorInvert") else { return nil }
+    filter.setValue(coreImage, forKey: kCIInputImageKey)
+    guard let result = filter.value(forKey: kCIOutputImageKey) as? UIKit.CIImage else { return nil }
+    if cgResult { // I've found that UIImage's that are based on CIImages don't work with a lot of calls properly
+        return UIImage(cgImage: CIContext(options: nil).createCGImage(result, from: result.extent)!)
+    }
+    return UIImage(ciImage: result)
+}
 }
