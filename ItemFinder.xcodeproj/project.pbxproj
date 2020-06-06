@@ -15,6 +15,8 @@
 		183E352F24731BDB00D0C20B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E352E24731BDB00D0C20B /* Constants.swift */; };
 		183E40852486BBE600064F65 /* CategoryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E40842486BBE600064F65 /* CategoryPicker.swift */; };
 		183EA35C248423880082BAB0 /* MainItemCVDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */; };
+		183FBD98248C41A4006A7D3A /* SearchTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183FBD97248C41A4006A7D3A /* SearchTableVC.swift */; };
+		183FBD9A248C4F38006A7D3A /* SearchItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183FBD99248C4F38006A7D3A /* SearchItemTableViewCell.swift */; };
 		18432450246EFA7700FB98E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1843244F246EFA7700FB98E6 /* AppDelegate.swift */; };
 		18432452246EFA7700FB98E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18432451246EFA7700FB98E6 /* SceneDelegate.swift */; };
 		18432457246EFA7700FB98E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18432455246EFA7700FB98E6 /* Main.storyboard */; };
@@ -71,6 +73,8 @@
 		183E352E24731BDB00D0C20B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		183E40842486BBE600064F65 /* CategoryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryPicker.swift; path = "/Users/mattiastornqvist/Desktop/Programmering/ItemFinder/ItemFinder/Controller/Add Item/CategoryPicker.swift"; sourceTree = "<absolute>"; };
 		183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainItemCVDataSource.swift; sourceTree = "<group>"; };
+		183FBD97248C41A4006A7D3A /* SearchTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableVC.swift; sourceTree = "<group>"; };
+		183FBD99248C4F38006A7D3A /* SearchItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemTableViewCell.swift; sourceTree = "<group>"; };
 		1843244C246EFA7700FB98E6 /* ItemFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ItemFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1843244F246EFA7700FB98E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18432451246EFA7700FB98E6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 				18432451246EFA7700FB98E6 /* SceneDelegate.swift */,
 				1843244F246EFA7700FB98E6 /* AppDelegate.swift */,
 				18432458246EFA7A00FB98E6 /* Assets.xcassets */,
+				183FBD99248C4F38006A7D3A /* SearchItemTableViewCell.swift */,
 				18432455246EFA7700FB98E6 /* Main.storyboard */,
 				1843245A246EFA7A00FB98E6 /* LaunchScreen.storyboard */,
 				1843245D246EFA7A00FB98E6 /* Info.plist */,
@@ -212,6 +217,7 @@
 		18432482246EFF1900FB98E6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				183FBD97248C41A4006A7D3A /* SearchTableVC.swift */,
 				18E66370248000D8003CAB13 /* Add Item */,
 				188B4ACD2471947600C39B0C /* SignUpVC */,
 				18432486246F152B00FB98E6 /* MainItemCollectionView.swift */,
@@ -572,9 +578,11 @@
 				183D27822477236D007708C8 /* ItemPhotoCVCell.swift in Sources */,
 				184A259E2489892C0013C122 /* SignUpView.swift in Sources */,
 				18432450246EFA7700FB98E6 /* AppDelegate.swift in Sources */,
+				183FBD9A248C4F38006A7D3A /* SearchItemTableViewCell.swift in Sources */,
 				183E352B24730DA300D0C20B /* Protocols.swift in Sources */,
 				18432452246EFA7700FB98E6 /* SceneDelegate.swift in Sources */,
 				183EA35C248423880082BAB0 /* MainItemCVDataSource.swift in Sources */,
+				183FBD98248C41A4006A7D3A /* SearchTableVC.swift in Sources */,
 				183E352D247319D100D0C20B /* Service.swift in Sources */,
 				18E663732480010C003CAB13 /* ValidationService.swift in Sources */,
 				1843248E246F4A3A00FB98E6 /* AddItemVC.swift in Sources */,

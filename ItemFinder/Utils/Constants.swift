@@ -21,6 +21,9 @@ let REF_CATEGORY_SPORT = REF_CATEGORY.child("sport")
 let REF_BIKING = REF_CATEGORY_SPORT.child(SportCategories.biking.dbRef)
 let REF_RUNNING = REF_CATEGORY_SPORT.child(SportCategories.running.dbRef)
 let REF_SKIING = REF_CATEGORY_SPORT.child(SportCategories.skiing.dbRef)
+let REF_GEO = REF.child("locations")
+let REF_LOCATIONS_ADMINISTRATIVE_AREA = REF_GEO.child("administrative_area")
+let REF_LOCATIONS_LOCALITY = REF_GEO.child("locality")
 
 enum CustomError: Error {
     case foundNil

@@ -44,6 +44,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: profileVC)
     }
     
+    func createSearchNC() -> UINavigationController {
+        let searchVC = SearchTableVC()
+        searchVC.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
+        
+        return UINavigationController(rootViewController: searchVC)
+    }
+    
     func configureBarAppearanceGlobally() {
 //        sets tab bar background color
         UITabBar.appearance().barTintColor = .mainYellow
@@ -64,7 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func createTabBar() -> UITabBarController{
         let tabbar = UITabBarController()
-        tabbar.viewControllers = [createMainNC(), createProfileNC()]
+        tabbar.viewControllers = [createMainNC(), createProfileNC(), createSearchNC()]
         
         configureBarAppearanceGlobally()
         

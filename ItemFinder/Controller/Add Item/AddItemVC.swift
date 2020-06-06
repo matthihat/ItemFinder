@@ -207,6 +207,8 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
 //    when save button in view is pressed
     func saveButton(_ button: UIButton, withTitle title: String?, withKeyWords keyWords: String?, withDescription description: String?) {
         
+        
+        
 //        create item
         let itemUnvalidated = ItemForUpload(title, keyWords, description, selectedImages, itemIsForSale ?? false, selectedCategory)
         

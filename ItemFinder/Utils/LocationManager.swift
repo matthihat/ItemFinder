@@ -78,8 +78,7 @@ extension LocationManager {
         case couldNotRetreiveCoordinates
         case couldNotRetreiveLocation
         case couldNotRetreivePlacemarks
-        
-
+        case couldNotUploadUserLocation
     }
 
 //Custom error descriptions
@@ -92,6 +91,8 @@ extension LocationError: LocalizedError {
             return NSLocalizedString("Error retreiving location placemarks.", comment: "Error retreiving location placemarks")
         case .couldNotRetreiveCoordinates:
             return NSLocalizedString("Error retreiving user coordinates.", comment: "Error retreiving user coordinates")
+        case .couldNotUploadUserLocation:
+            return NSLocalizedString("Error uploading user locations.", comment: "Error uploading user location")
         }
     }
 }

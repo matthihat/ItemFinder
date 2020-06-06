@@ -17,6 +17,10 @@ struct ItemForUpload {
     let images: [UIImage]?
     var isForSale: Bool
     var category: String?
+//    var latitude: Double?
+//    var longitude: Double?
+//    var administrativeArea: String?
+//    var city: String?
     
     init(_ title: String?, _ keywords: String?, _ description: String?, _ images: [UIImage]?, _ isForSale: Bool, _ category: String?) {
         self.title = title
@@ -123,6 +127,16 @@ struct ItemForUpload {
             
             switch result {
                 
+            case .success(_):
+                Void()
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        
+        Service.shared.uploadItemLocationToLocationRef(uid, itemId) { (result) in
+            
+            switch result {
             case .success(_):
                 Void()
             case .failure(let error):

@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import SVProgressHUD
+import CoreLocation
 
 class Service: NSObject {
     
@@ -478,6 +479,66 @@ class Service: NSObject {
         }
     }
     
+    func uploadItemLocationToLocationRef(_ uid: String, _ itemId: String, completion: @escaping(Result<Bool,LocationError>) -> Void)  {
+        USER_REF.child(uid).child("user_info").observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let dict = snapshot.value as? Dictionary<String,Any> else {completion(.success(true)); return }
+            
+            guard let lat = dict["latitude"] as? Double,
+                let long = dict["longitude"] as? Double
+                else { completion(.failure(.couldNotRetreiveCoordinates)); return }
+            
+            guard let latitude = CLLocationDegrees(exactly: lat),
+                let longitude = CLLocationDegrees(exactly: long)
+                else { completion(.failure(.couldNotRetreiveCoordinates)); return }
+            
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            
+            let geoCoder = CLGeocoder()
+            geoCoder.reverseGeocodeLocation(location) { (placemarks, err) in
+                
+//                    handle error
+                if err != nil {
+                    completion(.failure(.couldNotRetreivePlacemarks))
+                    return
+                }
+                
+                guard let placemark = placemarks?[0] else {
+                    completion(.failure(.couldNotRetreiveLocation))
+                    return
+                }
+                
+                guard let country = placemark.country else {
+                    completion(.failure(.couldNotRetreiveLocation))
+                    return
+                }
+                
+                guard let administrativeArea = placemark.administrativeArea,
+                    let city = placemark.locality
+                    else {completion(.failure(.couldNotRetreivePlacemarks)); return }
+                
+                REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).updateChildValues([itemId : 1]) { (err, ref) in
+                    
+//                    handle error
+                    if err != nil {
+                        completion(.failure(.couldNotUploadUserLocation))
+                        return
+                    }
+                    
+                    REF_LOCATIONS_LOCALITY.child(country).child(city).updateChildValues([itemId : 1]) { (err, ref) in
+                        
+//                        handle error
+                        if err != nil {
+                            completion(.failure(.couldNotUploadUserLocation))
+                            return
+                        }
+                        completion(.success(true))
+                    }
+                }
+            }
+        }
+    }
+    
 //    func fetchItem() {
 //        guard let url = URL(string: "https://itemfinder-c0570.firebaseio.com/items.json")
 //            else {
@@ -541,8 +602,18 @@ class Service: NSObject {
                     completion(.success(item))
                 }
             }
+        }
+    }
+    
+    func searchItemsForSale() {
+        REF_ITEM_FOR_SALE.observeSingleEvent(of: .value) { (snapshot) in
+            guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { return }
             
+            allItemIds.forEach { (snap) in
+                print("DEBUG itemid", snap.key)
+            }
             
+//            print("DEBUG itemid", allItemIds.count)
         }
     }
 }
