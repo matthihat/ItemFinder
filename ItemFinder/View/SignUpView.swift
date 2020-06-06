@@ -11,6 +11,12 @@ import UIKit
 class SignUpView: UIView {
     
 //    MARK: - Properties
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel.textLabel(titleLabel: "Item Finder", ofFontSize: 46)
+        return label
+    }()
+    
     private lazy var emailContainerView: UIView = {
         let view = UIView.inputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x").withTintColor(.black), textField: emailTextField)
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -114,6 +120,10 @@ class SignUpView: UIView {
     func configureUI() {
         backgroundColor = .backgroundYellow
         
+        addSubview(titleLabel)
+        titleLabel.anchor(top: safeAreaLayoutGuide.topAnchor, paddingTop: 32)
+        titleLabel.centerX(inView: self)
+        
         let stack = UIStackView(arrangedSubviews: [emailContainerView, fullnameContainerView, passwordContainerView])
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -121,7 +131,7 @@ class SignUpView: UIView {
         
         addSubviews(stack, locationButton, administrativeAreaLabel, cityLabelLabel, signUpButton, alreadyHaveAnAccountButton)
         
-        stack.anchor(top: safeAreaLayoutGuide.topAnchor, left: safeAreaLayoutGuide.leftAnchor, right: safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        stack.anchor(top: titleLabel.bottomAnchor, left: safeAreaLayoutGuide.leftAnchor, right: safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
         
         locationButton.centerX(inView: self)
         locationButton.anchor(top: stack.bottomAnchor, paddingTop: 25)
@@ -175,17 +185,4 @@ class SignUpView: UIView {
         delegate?.alreadyHaveAnAccountButton(alreadyHaveAnAccountButton)
     }
         
-}
-
-extension UIImage {
-func inverseImage(cgResult: Bool) -> UIImage? {
-    let coreImage = self.ciImage
-    guard let filter = CIFilter(name: "CIColorInvert") else { return nil }
-    filter.setValue(coreImage, forKey: kCIInputImageKey)
-    guard let result = filter.value(forKey: kCIOutputImageKey) as? UIKit.CIImage else { return nil }
-    if cgResult { // I've found that UIImage's that are based on CIImages don't work with a lot of calls properly
-        return UIImage(cgImage: CIContext(options: nil).createCGImage(result, from: result.extent)!)
-    }
-    return UIImage(ciImage: result)
-}
 }

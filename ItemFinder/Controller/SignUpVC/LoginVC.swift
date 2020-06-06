@@ -12,6 +12,12 @@ import SVProgressHUD
 
 class LoginView: UIView {
     //    MARK: - Properties
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel.textLabel(titleLabel: "Item Finder", ofFontSize: 46)
+        return label
+    }()
+    
     private lazy var emailContainerView: UIView = {
         let view = UIView.inputContainerView(image: #imageLiteral(resourceName: "ic_mail_outline_white_2x").withTintColor(.black), textField: emailTextField)
         view.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -72,6 +78,10 @@ class LoginView: UIView {
     func configureUI() {
         backgroundColor = .backgroundYellow
         
+        addSubview(titleLabel)
+        titleLabel.anchor(top: safeAreaLayoutGuide.topAnchor, paddingTop: 32)
+        titleLabel.centerX(inView: self)
+        
         let stack = UIStackView(arrangedSubviews: [emailContainerView, passwordContainerView, loginButton])
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -79,7 +89,7 @@ class LoginView: UIView {
         
         addSubview(stack)
         stack.centerX(inView: self)
-        stack.anchor(top: safeAreaLayoutGuide.topAnchor, left: safeAreaLayoutGuide.leftAnchor, right: safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        stack.anchor(top: titleLabel.bottomAnchor, left: safeAreaLayoutGuide.leftAnchor, right: safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
         
         addSubview(dontHaveAnAccountButton)
         dontHaveAnAccountButton.centerX(inView: self)
