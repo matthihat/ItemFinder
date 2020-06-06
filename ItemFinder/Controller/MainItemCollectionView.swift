@@ -43,8 +43,8 @@ class MainItemCollectionView: UICollectionViewController {
         configureCollectionView()
         
         configureRefreshControl()
+        
     }
-    
     
 //    MARK: - Helper functions
     

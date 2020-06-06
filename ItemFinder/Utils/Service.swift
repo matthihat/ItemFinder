@@ -170,6 +170,8 @@ class Service: NSObject {
         }
     }
     
+
+    
     func uploadItemImage(_ itemId: String, _ images: [UIImage]?, completion: @escaping(Result<String,Error>) -> ()) {
         
 //        var urlStringArray = [String]()
@@ -426,6 +428,52 @@ class Service: NSObject {
                     return
                 }
                 completion(.success(true))
+            }
+        }
+    }
+    
+    func uploadItemLocation(_ uid: String, _ itemId: String, completion: @escaping(Result<Bool,Error>) -> Void) {
+        
+        var latitude: Double?
+        var longitude: Double?
+        let group = DispatchGroup()
+        
+        group.enter()
+
+//        fetch user location coordinates
+        USER_REF.child(uid).child("user_info").observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let dict = snapshot.value as? Dictionary<String,Any> else { return }
+            guard let lat = dict["latitude"] as? Double else { return }
+            guard let long = dict["longitude"] as? Double else { return }
+            
+            latitude = lat
+            longitude = long
+            
+            group.leave()
+        }
+        
+//        upload user coordinates to item ref
+        group.notify(queue: .main) {
+            
+            if let latitude = latitude,
+                let longitude = longitude {
+                
+                let uploadValues = [
+                                    "latitude":latitude,
+                                    "longitude":longitude
+                                    ]
+                
+                REF_ITEMS.child(itemId).updateChildValues(uploadValues) { (err, ref) in
+                    
+//                    handle error
+                    if let error = err {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    completion(.success(true))
+                }
             }
         }
     }

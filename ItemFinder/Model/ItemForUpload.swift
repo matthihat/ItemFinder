@@ -118,6 +118,17 @@ struct ItemForUpload {
                 completion(.failure(error))
             }
         }
+        
+        Service.shared.uploadItemLocation(uid, itemId) { (result) in
+            
+            switch result {
+                
+            case .success(_):
+                Void()
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
 
         group.enter()
         DispatchQueue.main.async {
