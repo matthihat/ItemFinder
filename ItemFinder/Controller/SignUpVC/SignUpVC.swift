@@ -41,6 +41,37 @@ class SignUpVC: UIViewController {
         signUpView.fullnameTextField.delegate = self
         signUpView.passwordTextField.delegate = self
     }
+    
+    func getUserCoordinates() {
+        guard let exposedLocation = locationManager.exposedLocation else {
+            SVProgressHUD.showError(withStatus: LocationError.couldNotRetreiveCoordinates.localizedDescription)
+            return
+        }
+        
+        let latitude: Double = exposedLocation.coordinate.latitude
+        let longitude: Double = exposedLocation.coordinate.longitude
+        
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
+    func getUserLocationPlacemarks() {
+        self.locationManager.getPlace { (result) in
+            
+            switch result {
+            case .success(let placemarks):
+                
+//                get placemark properties
+                if let administrativeArea = placemarks.administrativeArea,
+                    let city = placemarks.locality {
+//                    show location in view
+                    self.signUpView.showLocationLabels(city, administrativeArea)
+                }
+            case .failure(let error):
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+            }
+        }
+    }
 }
 
 //Sign up view delegate methods
@@ -48,25 +79,41 @@ extension SignUpVC: SignUpDelegate {
     
     func handleGetLocationPressed(_ button: UIButton) {
         
-        guard let exposedLocation = locationManager.exposedLocation else {
-            print("DEBUG Error in \(#function): exposedLocation is nil")
-            return
-        }
+//        get coordinates
+        getUserCoordinates()
+        
+//        get user loaction placemarks, admin. area and city
+        getUserLocationPlacemarks()
+        
+//        get location placemarks
+//        self.locationManager.getPlace { (result) in
+//            
+//            switch result {
+//            case .success(let placemarks):
+//                
+////                get placemark properties
+//                if let administrativeArea = placemarks.administrativeArea,
+//                    let city = placemarks.locality {
+////                    show location in view
+//                    self.signUpView.showLocationLabels(city, administrativeArea)
+//                }
+//            case .failure(let error):
+//                SVProgressHUD.showError(withStatus: error.localizedDescription)
+//            }
+//        }
+        
+//        self.locationManager.exposedLocation
 
-        self.locationManager.getPlace(for: exposedLocation) { (placemark) in
-            guard let placemark = placemark else { return }
+//        self.locationManager.getPlace(for: exposedLocation) { (placemark) in
+//            guard let placemark = placemark else { return }
             
-            let latitude: Double = exposedLocation.coordinate.latitude
-            let longitude: Double = exposedLocation.coordinate.longitude
+
             
-            self.latitude = latitude
-            self.longitude = longitude
-            
-            if let administrativeArea = placemark.administrativeArea,
-                let city = placemark.locality {
-                self.signUpView.showLocationLabels(city, administrativeArea)
-            }
-        }
+//            if let administrativeArea = placemark.administrativeArea,
+//                let city = placemark.locality {
+//                self.signUpView.showLocationLabels(city, administrativeArea)
+//            }
+//        }
 
         
     }

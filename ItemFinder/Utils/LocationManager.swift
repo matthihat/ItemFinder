@@ -47,26 +47,53 @@ extension LocationManager: CLLocationManagerDelegate {
 
 extension LocationManager {
     
-    func getPlace(for location: CLLocation, completion: @escaping(CLPlacemark?) -> Void) {
+    func getPlace(completion: @escaping(Result<CLPlacemark, LocationError>) -> Void) {
+        
+        guard let currentLocation = locationManager.location else {
+            completion(.failure(.couldNotRetreiveLocation))
+            return
+        }
         
         let geoCoder = CLGeocoder()
         
-        geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+        geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, err) in
             
-            guard error == nil else {
-                print("DEBUG Error in \(#function): \(error!.localizedDescription)")
-                completion(nil)
+            if err != nil {
+                completion(.failure(.couldNotRetreivePlacemarks))
                 return
             }
             
             guard let placemark = placemarks?[0] else {
-                print("DEBUG Error in \(#function): placemark is nil")
-                completion(nil)
+                completion(.failure(.couldNotRetreivePlacemarks))
                 return
             }
             
-            completion(placemark)
+            completion(.success(placemark))
         }
-        
     }
 }
+
+//Custom error
+    enum LocationError: Error {
+        case couldNotRetreiveCoordinates
+        case couldNotRetreiveLocation
+        case couldNotRetreivePlacemarks
+        
+
+    }
+
+//Custom error descriptions
+extension LocationError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .couldNotRetreiveLocation:
+            return NSLocalizedString("Error retreiving user location.", comment: "Error retreiving user location")
+        case .couldNotRetreivePlacemarks:
+            return NSLocalizedString("Error retreiving location placemarks.", comment: "Error retreiving location placemarks")
+        case .couldNotRetreiveCoordinates:
+            return NSLocalizedString("Error retreiving user coordinates.", comment: "Error retreiving user coordinates")
+        }
+    }
+}
+
+
