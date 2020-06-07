@@ -23,7 +23,7 @@ struct DownloadedItem {
     init(_ dict: Dictionary<String,AnyObject>) {
         self.itemId = dict["id"] as! String
         
-        self.ownerUid = dict["ownerUid"] as! String
+        self.ownerUid = dict["owner_uid"] as! String
         
         if let title = dict["title"] as? String {
             self.title = title

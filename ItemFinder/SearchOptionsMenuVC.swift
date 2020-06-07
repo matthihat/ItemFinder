@@ -77,6 +77,8 @@ extension SearchOptionsMenuVC: SearchViewDelegate {
         guard let city = currentCity, let country = currentCountry else { return }
         
         Service.shared.searchItemsForSaleInCurrentCity(country, city)
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
     

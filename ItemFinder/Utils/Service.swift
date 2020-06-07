@@ -668,22 +668,23 @@ class Service: NSObject {
     }
     
     func searchItemsForSaleInCurrentCity(_ country: String, _ locality: String) {
-//        REF_ITEM_FOR_SALE.observeSingleEvent(of: .value) { (snapshot) in
-//            guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { return }
-//
-//            allItemIds.forEach { (snap) in
-//                print("DEBUG itemid", snap.key)
-//            }
-//
-////            print("DEBUG itemid", allItemIds.count)
-//        }
         
-        REF_LOCATIONS_LOCALITY.child(country).child(locality).observeSingleEvent(of: .value) { (snapshot) in
+        REF_LOCATIONS_LOCALITY.child(country).child(locality).child("is_for_sale").observeSingleEvent(of: .value) { (snapshot) in
             
             guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { return }
             
             allItemIds.forEach { (dict) in
-                print("DEBUG itemid", dict.key)
+                
+                let itemId = dict.key
+                
+                REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { return }
+                    
+                    let item = DownloadedItem(dict)
+                    print("DEBUG item", item.title)
+                    
+                }
                 
                 
             }
