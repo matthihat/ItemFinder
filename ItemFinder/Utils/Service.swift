@@ -514,7 +514,9 @@ class Service: NSObject {
         }
     }
     
-    func uploadItemLocationToLocationRef(_ uid: String, _ itemId: String, completion: @escaping(Result<Bool,LocationError>) -> Void)  {
+    func uploadItemLocationToLocationRef(_ uid: String, _ itemId: String, _ isForSale: Bool, _ isForGiveAway: Bool, completion: @escaping(Result<Bool,LocationError>) -> Void)  {
+        
+//        fetch current users home location
         USER_REF.child(uid).child("user_info").observeSingleEvent(of: .value) { (snapshot) in
             
             guard let dict = snapshot.value as? Dictionary<String,Any> else {completion(.success(true)); return }
@@ -538,6 +540,7 @@ class Service: NSObject {
                     return
                 }
                 
+//                get placemarks
                 guard let placemark = placemarks?[0] else {
                     completion(.failure(.couldNotRetreiveLocation))
                     return
@@ -552,24 +555,48 @@ class Service: NSObject {
                     let city = placemark.locality
                     else {completion(.failure(.couldNotRetreivePlacemarks)); return }
                 
-                REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).updateChildValues([itemId : 1]) { (err, ref) in
-                    
-//                    handle error
-                    if err != nil {
-                        completion(.failure(.couldNotUploadUserLocation))
-                        return
-                    }
-                    
-                    REF_LOCATIONS_LOCALITY.child(country).child(city).updateChildValues([itemId : 1]) { (err, ref) in
-                        
-//                        handle error
+                if isForSale {
+                    REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).child("is_for_sale").updateChildValues([itemId : 1]) { (err, ref) in
+                                        
+    //                    handle error
                         if err != nil {
                             completion(.failure(.couldNotUploadUserLocation))
                             return
                         }
-                        completion(.success(true))
+                        
+                        REF_LOCATIONS_LOCALITY.child(country).child(city).child("is_for_sale").updateChildValues([itemId : 1]) { (err, ref) in
+                            
+    //                        handle error
+                            if err != nil {
+                                completion(.failure(.couldNotUploadUserLocation))
+                                return
+                            }
+                            completion(.success(true))
+                        }
                     }
                 }
+                
+                if isForGiveAway {
+                    REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).child("is_for_give_away").updateChildValues([itemId : 1]) { (err, ref) in
+                                        
+    //                    handle error
+                        if err != nil {
+                            completion(.failure(.couldNotUploadUserLocation))
+                            return
+                        }
+                        
+                        REF_LOCATIONS_LOCALITY.child(country).child(city).child("is_for_give_away").updateChildValues([itemId : 1]) { (err, ref) in
+                            
+    //                        handle error
+                            if err != nil {
+                                completion(.failure(.couldNotUploadUserLocation))
+                                return
+                            }
+                            completion(.success(true))
+                        }
+                    }
+                }
+                
             }
         }
     }

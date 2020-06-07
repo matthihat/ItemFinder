@@ -128,7 +128,6 @@ struct ItemForUpload {
         Service.shared.uploadItemLocation(uid, itemId) { (result) in
             
             switch result {
-                
             case .success(_):
                 Void()
             case .failure(let error):
@@ -136,7 +135,7 @@ struct ItemForUpload {
             }
         }
         
-        Service.shared.uploadItemLocationToLocationRef(uid, itemId) { (result) in
+        Service.shared.uploadItemLocationToLocationRef(uid, itemId, isForSale, isForGiveAway) { (result) in
             
             switch result {
             case .success(_):
