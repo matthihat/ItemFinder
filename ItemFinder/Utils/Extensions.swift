@@ -334,6 +334,14 @@ extension UILabel {
         label.text = titleLabel
         return label
     }
+    
+    static func textRegularLabel(titleLabel: String, ofFontSize: CGFloat) -> UILabel {
+        let label = UILabel()
+        label.font = UIFont(name: "Avenir", size: ofFontSize)
+        label.textColor = UIColor.black
+        label.text = titleLabel
+        return label
+    }
 }
 
 extension UITextField {

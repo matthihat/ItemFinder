@@ -14,6 +14,8 @@
 		183E352D247319D100D0C20B /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E352C247319D100D0C20B /* Service.swift */; };
 		183E352F24731BDB00D0C20B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E352E24731BDB00D0C20B /* Constants.swift */; };
 		183E40852486BBE600064F65 /* CategoryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E40842486BBE600064F65 /* CategoryPicker.swift */; };
+		183E7750248D21920096537D /* SearchOptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E774F248D21920096537D /* SearchOptionsMenuView.swift */; };
+		183E7752248D5CEC0096537D /* DownloadedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183E7751248D5CEC0096537D /* DownloadedItem.swift */; };
 		183EA35C248423880082BAB0 /* MainItemCVDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */; };
 		183FBD98248C41A4006A7D3A /* SearchTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183FBD97248C41A4006A7D3A /* SearchTableVC.swift */; };
 		183FBD9A248C4F38006A7D3A /* SearchItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183FBD99248C4F38006A7D3A /* SearchItemTableViewCell.swift */; };
@@ -73,6 +75,8 @@
 		183E352C247319D100D0C20B /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		183E352E24731BDB00D0C20B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		183E40842486BBE600064F65 /* CategoryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoryPicker.swift; path = "/Users/mattiastornqvist/Desktop/Programmering/ItemFinder/ItemFinder/Controller/Add Item/CategoryPicker.swift"; sourceTree = "<absolute>"; };
+		183E774F248D21920096537D /* SearchOptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOptionsMenuView.swift; sourceTree = "<group>"; };
+		183E7751248D5CEC0096537D /* DownloadedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedItem.swift; sourceTree = "<group>"; };
 		183EA35B248423880082BAB0 /* MainItemCVDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainItemCVDataSource.swift; sourceTree = "<group>"; };
 		183FBD97248C41A4006A7D3A /* SearchTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableVC.swift; sourceTree = "<group>"; };
 		183FBD99248C4F38006A7D3A /* SearchItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 		18432443246EFA7700FB98E6 = {
 			isa = PBXGroup;
 			children = (
+				183E7751248D5CEC0096537D /* DownloadedItem.swift */,
+				183E774F248D21920096537D /* SearchOptionsMenuView.swift */,
 				1843244E246EFA7700FB98E6 /* ItemFinder */,
 				18432465246EFA7A00FB98E6 /* ItemFinderTests */,
 				18432470246EFA7A00FB98E6 /* ItemFinderUITests */,
@@ -578,6 +584,7 @@
 				18432481246EFAA300FB98E6 /* Item.swift in Sources */,
 				188B4ACF2471949000C39B0C /* SignUpVC.swift in Sources */,
 				184A25A024898C250013C122 /* LocationManager.swift in Sources */,
+				183E7752248D5CEC0096537D /* DownloadedItem.swift in Sources */,
 				183DC317247452E800422D8D /* LoginVC.swift in Sources */,
 				183D27822477236D007708C8 /* ItemPhotoCVCell.swift in Sources */,
 				184A259E2489892C0013C122 /* SignUpView.swift in Sources */,
@@ -598,6 +605,7 @@
 				18432484246EFF2F00FB98E6 /* ItemCell.swift in Sources */,
 				18E6637B2480046D003CAB13 /* PhotoCVDataSource.swift in Sources */,
 				1843248C246F2FB400FB98E6 /* ProfileVC.swift in Sources */,
+				183E7750248D21920096537D /* SearchOptionsMenuView.swift in Sources */,
 				188B4AD12471950600C39B0C /* ConfirmButton.swift in Sources */,
 				183E40852486BBE600064F65 /* CategoryPicker.swift in Sources */,
 				18E6637D248004B7003CAB13 /* AddItemView.swift in Sources */,

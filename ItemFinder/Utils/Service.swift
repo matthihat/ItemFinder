@@ -414,7 +414,7 @@ class Service: NSObject {
                         return
                     }
                     
-                    completion(.success(true))
+//                    completion(.success(true))
                 }
             }
             
@@ -422,6 +422,41 @@ class Service: NSObject {
             
 //            upload false to item ref
             REF_ITEMS.child(itemId).updateChildValues(["is_for_sale" : false]) { (err, ref) in
+
+//                handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+//                completion(.success(true))
+            }
+        }
+        
+        if item.isForGiveAway {
+            
+//            upload true to item ref
+            REF_ITEMS.child(itemId).updateChildValues(["is_for_give_away" : true]) { (err, ref) in
+                
+//                handle error
+                if let error = err {
+                    completion(.failure(error))
+                    return
+                }
+                
+                REF_ITEM_FOR_GIVE_AWAY.updateChildValues([itemId: 1]) { (err, ref) in
+                                
+//                    handle error
+                    if let error = err {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+//                    completion(.success(true))
+                }
+            }
+        } else {
+//            upload false to item ref
+            REF_ITEMS.child(itemId).updateChildValues(["is_for_give_away" : false]) { (err, ref) in
 
 //                handle error
                 if let error = err {
@@ -605,15 +640,26 @@ class Service: NSObject {
         }
     }
     
-    func searchItemsForSale() {
-        REF_ITEM_FOR_SALE.observeSingleEvent(of: .value) { (snapshot) in
+    func searchItemsForSaleInCurrentCity(_ country: String, _ locality: String) {
+//        REF_ITEM_FOR_SALE.observeSingleEvent(of: .value) { (snapshot) in
+//            guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//            allItemIds.forEach { (snap) in
+//                print("DEBUG itemid", snap.key)
+//            }
+//
+////            print("DEBUG itemid", allItemIds.count)
+//        }
+        
+        REF_LOCATIONS_LOCALITY.child(country).child(locality).observeSingleEvent(of: .value) { (snapshot) in
+            
             guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { return }
             
-            allItemIds.forEach { (snap) in
-                print("DEBUG itemid", snap.key)
+            allItemIds.forEach { (dict) in
+                print("DEBUG itemid", dict.key)
+                
+                
             }
-            
-//            print("DEBUG itemid", allItemIds.count)
         }
     }
 }

@@ -71,6 +71,101 @@ extension LocationManager {
             completion(.success(placemark))
         }
     }
+    
+//    fetches users current city
+    func getCity(completion: @escaping(Result<String, LocationError>) -> Void) {
+        
+        guard let currentLocation = locationManager.location else {
+            completion(.failure(.couldNotRetreiveLocation))
+            return
+        }
+        
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, err) in
+            
+            if err != nil {
+                completion(.failure(.couldNotRetreivePlacemarks))
+                return
+            }
+            
+            guard let placemark = placemarks?[0] else {
+                completion(.failure(.couldNotRetreivePlacemarks))
+                return
+            }
+            
+            guard let city = placemark.locality else {
+                completion(.failure(.couldNotGetUsersCurrentCityLocation))
+                return
+            }
+            
+            completion(.success(city))
+        }
+    }
+    
+//    fetches users current admin. area, ie county
+    func getAdministrativeArea(completion: @escaping(Result<String, LocationError>) -> Void) {
+        
+        guard let currentLocation = locationManager.location else {
+            completion(.failure(.couldNotRetreiveLocation))
+            return
+        }
+        
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, err) in
+            
+            if err != nil {
+                completion(.failure(.couldNotRetreivePlacemarks))
+                return
+            }
+            
+            guard let placemark = placemarks?[0] else {
+                completion(.failure(.couldNotRetreivePlacemarks))
+                return
+            }
+            
+            guard let administativeArea = placemark.administrativeArea else {
+                completion(.failure(.couldNotGetUsersCurrentAdministrativeLocation))
+                return
+            }
+            
+            completion(.success(administativeArea))
+        }
+    }
+    
+    //    fetches users current country, ie Sweden
+    func getCountry(completion: @escaping(Result<String, LocationError>) -> Void) {
+        
+        guard let currentLocation = locationManager.location else {
+            completion(.failure(.couldNotRetreiveLocation))
+            return
+        }
+        
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, err) in
+            
+            if err != nil {
+                completion(.failure(.couldNotRetreivePlacemarks))
+                return
+            }
+            
+            guard let placemark = placemarks?[0] else {
+                completion(.failure(.couldNotRetreivePlacemarks))
+                return
+            }
+            
+            guard let country = placemark.country else {
+                completion(.failure(.couldNotGetUsersCurrentCountryLocation))
+                return
+            }
+            
+            completion(.success(country))
+        }
+    }
+    
+    
 }
 
 //Custom error
@@ -79,6 +174,9 @@ extension LocationManager {
         case couldNotRetreiveLocation
         case couldNotRetreivePlacemarks
         case couldNotUploadUserLocation
+        case couldNotGetUsersCurrentCityLocation
+        case couldNotGetUsersCurrentAdministrativeLocation
+        case couldNotGetUsersCurrentCountryLocation
     }
 
 //Custom error descriptions
@@ -93,6 +191,12 @@ extension LocationError: LocalizedError {
             return NSLocalizedString("Error retreiving user coordinates.", comment: "Error retreiving user coordinates")
         case .couldNotUploadUserLocation:
             return NSLocalizedString("Error uploading user locations.", comment: "Error uploading user location")
+        case .couldNotGetUsersCurrentCityLocation:
+            return NSLocalizedString("Error acquiring your current city.", comment: "Error fetching users current city location")
+        case .couldNotGetUsersCurrentAdministrativeLocation:
+            return NSLocalizedString("Error acquiring your current locational administrative area.", comment: "Error acquiring your current locational administrative area.")
+        case .couldNotGetUsersCurrentCountryLocation:
+            return NSLocalizedString("Error acquiring your current country.", comment: "Error acquiring your current country.")
         }
     }
 }

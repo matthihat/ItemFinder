@@ -45,6 +45,14 @@ protocol CategoryPickerDelegate {
     func pickerView(_ picker: UIPickerView, _ selectedCategory: String)
 }
 
-protocol SearchTableDelegate {
+protocol SearchTableDelegate: class {
     func didSelectRow(_ tableView: UITableView, indexPath: IndexPath)
+}
+
+protocol SearchOptionsMenuDelegate: class {
+    func didSelectSearchOptions()
+}
+
+protocol SearchViewDelegate: class {
+    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool)
 }
