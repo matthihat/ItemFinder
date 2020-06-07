@@ -40,3 +40,7 @@ protocol ImageProvidedDelegate: class {
 protocol CategoryPickerDelegate {
     func pickerView(_ picker: UIPickerView, _ selectedCategory: String)
 }
+
+protocol SearchTableDelegate {
+    func didSelectRow(_ tableView: UITableView, indexPath: IndexPath)
+}
