@@ -30,6 +30,10 @@ protocol AddItemViewDelegate: class {
     
     func itemIsNotForSale(_ sender: UISwitch)
     
+    func itemIsForGiveAway(_ sender: UISwitch)
+    
+    func itemIsNotForGiveAway(_ sender: UISwitch)
+    
     func closeButton(_ button: UIButton)
 }
 

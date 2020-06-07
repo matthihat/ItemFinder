@@ -38,6 +38,8 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
     
     var itemIsForSale: Bool?
     
+    var itemIsForGiveAway: Bool?
+    
     let frame = CGRect.zero
     
     lazy var categoryPickerView: UIPickerView = {
@@ -204,13 +206,21 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
         itemIsForSale = false
     }
     
+    func itemIsForGiveAway(_ sender: UISwitch) {
+        itemIsForGiveAway = true
+    }
+    
+    func itemIsNotForGiveAway(_ sender: UISwitch) {
+        itemIsForGiveAway = false
+    }
+    
 //    when save button in view is pressed
     func saveButton(_ button: UIButton, withTitle title: String?, withKeyWords keyWords: String?, withDescription description: String?) {
         
         
         
 //        create item
-        let itemUnvalidated = ItemForUpload(title, keyWords, description, selectedImages, itemIsForSale ?? false, selectedCategory)
+        let itemUnvalidated = ItemForUpload(title, keyWords, description, selectedImages, itemIsForSale ?? false, itemIsForGiveAway ?? false, selectedCategory)
         
 //        validate title description
         do {

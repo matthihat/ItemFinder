@@ -34,6 +34,18 @@ class AddItemView: UIView {
         return selector
     }()
     
+    let isForGiveAwayLabel: UILabel = {
+        let label = UILabel.textLabel(titleLabel: "Is for give away", ofFontSize: 18)
+        return label
+    }()
+    
+    let isForGiveAwaySwitch: UISwitch = {
+        let selector = UISwitch()
+        selector.isOn = false
+        selector.addTarget(self, action: #selector(handleItemIsForGiveAway(_:)), for: .valueChanged)
+        return selector
+    }()
+    
     let titleTextField: UITextField = {
         let textField = UITextField.textField(withPlaceHolder: "Title")
         return textField
@@ -64,7 +76,7 @@ class AddItemView: UIView {
     
     lazy var descriptionInputView: UIView = {
         let view = UIView.inputContainerView(titleText: "Description", textView: descriptionTextView)
-        view.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
         return view
     }()
     
@@ -122,7 +134,7 @@ class AddItemView: UIView {
         stack.addArrangedSubview(descriptionInputView)
         stack.addArrangedSubview(saveButton)
         
-        addSubviews(descriptionTitleLabel, closeButton, isForSaleLabel, isForSaleSwitch, stack)
+        addSubviews(descriptionTitleLabel, closeButton, isForSaleLabel, isForSaleSwitch, isForGiveAwayLabel, isForGiveAwaySwitch, stack)
         
         closeButton.anchor(top: safeAreaLayoutGuide.topAnchor, right: rightAnchor, paddingTop: 8, paddingRight: 8)
         
@@ -132,7 +144,11 @@ class AddItemView: UIView {
         
         isForSaleSwitch.anchor(top: isForSaleLabel.bottomAnchor, right: rightAnchor, paddingTop: 4, paddingRight: 16)
         
-        stack.anchor(top: isForSaleSwitch.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 16, paddingRight: 16)
+        isForGiveAwayLabel.anchor(top: isForSaleSwitch.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingRight: 16)
+        
+        isForGiveAwaySwitch.anchor(top: isForGiveAwayLabel.bottomAnchor, right: rightAnchor, paddingTop: 4, paddingRight: 16)
+        
+        stack.anchor(top: isForGiveAwaySwitch.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 16, paddingRight: 16)
         
         
 
@@ -151,12 +167,24 @@ class AddItemView: UIView {
     }
     
     @objc func handleItemIsForSale(_ sender: UISwitch) {
-        if sender.isOn {
-            delegate?.itemIsForSale(sender)
-        } else {
-            delegate?.itemIsNotForSale(sender)
-        }
         
+        if sender == isForSaleSwitch{
+            if sender.isOn {
+                delegate?.itemIsForSale(sender)
+            } else {
+                delegate?.itemIsNotForSale(sender)
+            }
+        }
+    }
+    
+    @objc func handleItemIsForGiveAway(_ sender: UISwitch) {
+        if sender == isForGiveAwaySwitch {
+            if sender.isOn {
+                delegate?.itemIsForGiveAway(sender)
+            } else {
+                delegate?.itemIsNotForGiveAway(sender)
+            }
+        }
     }
     
     @objc func handleSaveButtonPressed() {

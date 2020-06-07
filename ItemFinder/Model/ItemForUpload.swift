@@ -16,18 +16,20 @@ struct ItemForUpload {
     let description: String?
     let images: [UIImage]?
     var isForSale: Bool
+    var isForGiveAway: Bool
     var category: String?
 //    var latitude: Double?
 //    var longitude: Double?
 //    var administrativeArea: String?
 //    var city: String?
     
-    init(_ title: String?, _ keywords: String?, _ description: String?, _ images: [UIImage]?, _ isForSale: Bool, _ category: String?) {
+    init(_ title: String?, _ keywords: String?, _ description: String?, _ images: [UIImage]?, _ isForSale: Bool, _ isForGiveAway: Bool, _ category: String?) {
         self.title = title
         self.keywords = keywords
         self.description = description
         self.images = images
         self.isForSale = isForSale
+        self.isForGiveAway = isForGiveAway
         self.category = category
     }
     

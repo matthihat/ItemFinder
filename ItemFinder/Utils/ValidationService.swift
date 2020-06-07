@@ -17,6 +17,7 @@ struct ValidationService {
         guard let title = item.title else { throw ValidationError.invalidValue}
         guard title.count > 3 else { throw ValidationError.titleTooShort}
         guard title.count < 60 else { throw ValidationError.titleTooLong}
+        guard item.isForSale && !item.isForGiveAway || item.isForGiveAway && !item.isForSale || item.isForSale == false && item.isForGiveAway == false else { throw ValidationError.itemIsForSaleAndForGiveAway}
         return item
     }
     
@@ -25,6 +26,7 @@ struct ValidationService {
         case invalidValue
         case titleTooShort
         case titleTooLong
+        case itemIsForSaleAndForGiveAway
         
         var errorDescription: String? {
             switch self {
@@ -34,6 +36,8 @@ struct ValidationService {
                 return "Title is too short."
             case .titleTooLong:
                 return "Title is too long."
+            case .itemIsForSaleAndForGiveAway:
+                return "Item can not be for sale and for give away."
             }
         }
     }
