@@ -11,6 +11,13 @@ import UIKit
 class SearchItemTableViewCell: UITableViewCell {
     
     static var reuseIdentifier = "reuseIdentifier"
+    
+    var item: DownloadedItem? {
+        didSet {
+            textLabel?.text = item?.title
+            detailTextLabel?.text = item?.category
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,6 +28,7 @@ class SearchItemTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .green
+        
     }
     
     required init?(coder: NSCoder) {

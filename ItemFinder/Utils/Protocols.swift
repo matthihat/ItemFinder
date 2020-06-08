@@ -50,7 +50,7 @@ protocol SearchTableDelegate: class {
 }
 
 protocol SearchOptionsMenuDelegate: class {
-    func didSelectSearchOptions()
+    func didStartItemSearch(_ vc: UIViewController, _ item: DownloadedItem)
 }
 
 protocol SearchViewDelegate: class {

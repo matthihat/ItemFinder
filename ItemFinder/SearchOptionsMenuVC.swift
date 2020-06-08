@@ -76,15 +76,18 @@ extension SearchOptionsMenuVC: SearchViewDelegate {
         
         guard let city = currentCity, let country = currentCountry else { return }
         
-        Service.shared.searchItemsForSaleInCurrentCity(country, city)
+        Service.shared.searchItemsForSaleInCurrentCity(country, city) { (result) in
+            switch result {
+                
+            case .success(let item):
+//                pass data to search table view
+                self.delegate?.didStartItemSearch(self, item)
+                
+            case .failure(let error):
+                SVProgressHUD.showError(withStatus: error.errorDescription)
+            }
+        }
         
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
-//    func didSelectSearchOptions() {
-//        print("Debug search")
-//    }
-
-    
 }
