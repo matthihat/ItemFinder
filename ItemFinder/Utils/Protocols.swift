@@ -50,9 +50,9 @@ protocol SearchTableDelegate: class {
 }
 
 protocol SearchOptionsMenuDelegate: class {
-    func didStartItemSearch(_ vc: UIViewController, _ item: DownloadedItem)
+    func performSearch(_ vc: UIViewController, _ country: String, _ adminArea: String, _ city: String, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?)
 }
 
 protocol SearchViewDelegate: class {
-    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool)
+    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?)
 }

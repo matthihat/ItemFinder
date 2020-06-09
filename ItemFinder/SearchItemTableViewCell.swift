@@ -16,6 +16,7 @@ class SearchItemTableViewCell: UITableViewCell {
         didSet {
             textLabel?.text = item?.title
             detailTextLabel?.text = item?.category
+            
             if let itemImageUrl = item?.imagesUrls?.components(separatedBy: " ").first {
                 itemImageView.loadImage(with: itemImageUrl)
             }
@@ -55,6 +56,7 @@ class SearchItemTableViewCell: UITableViewCell {
         itemImageView.centerY(inView: self)
         itemImageView.anchor(top: nil, left: contentView.leftAnchor, bottom: nil, paddingLeft: 4, width: contentView.frame.height, height: contentView.frame.height)
         itemImageView.layer.cornerRadius = (contentView.frame.height) / 2
+
     }
 
 }

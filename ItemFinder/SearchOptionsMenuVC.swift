@@ -72,22 +72,33 @@ class SearchOptionsMenuVC: UIViewController {
 }
 
 extension SearchOptionsMenuVC: SearchViewDelegate {
+    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?) {
+        
+        guard let city = currentCity, let country = currentCountry, let administrativeArea = currentAdministrativeArea else { return }
+        
+//        send selected search options to table view controller
+        delegate?.performSearch(self, country, administrativeArea, city, extendSearch, searchInAllCategories, searchInCategory)
+        
+//        dismiss search options vc
+        self.dismiss(animated: true, completion: nil)
+        
+    }
     func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool) {
         
-        guard let city = currentCity, let country = currentCountry else { return }
-        
-        Service.shared.searchItemsForSaleInCurrentCity(country, city) { (result) in
-            switch result {
-                
-            case .success(let item):
-//                pass data to search table view
-                self.delegate?.didStartItemSearch(self, item)
-                
-            case .failure(let error):
-                SVProgressHUD.showError(withStatus: error.errorDescription)
-            }
-        }
-        
-        self.dismiss(animated: true, completion: nil)
+//
+//
+//        Service.shared.searchItemsForSaleInCurrentCity(country, city) { (result) in
+//            switch result {
+//
+//            case .success(let item):
+////                pass data to search table view
+//                self.delegate?.didStartItemSearch(self, item)
+//
+//            case .failure(let error):
+//                SVProgressHUD.showError(withStatus: error.errorDescription)
+//            }
+//        }
+//
+//        self.dismiss(animated: true, completion: nil)
     }
 }

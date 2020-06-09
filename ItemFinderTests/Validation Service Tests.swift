@@ -28,7 +28,7 @@ class Validation_Service_Tests: XCTestCase {
     }
     
     func test_is_item_title_nil() throws {
-        let item = ItemForUpload(nil, nil, nil, nil, true, nil)
+        let item = ItemForUpload(nil, nil, nil, nil, true, false, nil)
         let expectedError = ValidationService.ValidationError.invalidValue
         var error: ValidationService.ValidationError?
         
@@ -41,11 +41,11 @@ class Validation_Service_Tests: XCTestCase {
     }
     
     func test_is_valid_item_title() throws {
-        XCTAssertNoThrow(try sut.validateItem(validateItem: ItemForUpload("abcd", nil, nil, nil, true, nil)))
+        XCTAssertNoThrow(try sut.validateItem(validateItem: ItemForUpload("abcd", nil, nil, nil, true, false, nil)))
     }
     
     func test_is_item_title_too_short() throws {
-        let item = ItemForUpload("aa", nil, nil, nil, true, nil)
+        let item = ItemForUpload("aa", nil, nil, nil, true, false, nil)
         let expectedError = ValidationService.ValidationError.titleTooShort
         var error: ValidationService.ValidationError?
         
@@ -58,7 +58,7 @@ class Validation_Service_Tests: XCTestCase {
     }
     
     func test_is_item_title_too_long() throws {
-        let item = ItemForUpload("aaaaaaaaaaaaaaaaagggggggggggggggggggbbbbbbbbbbbbbbbbbrrrrrrrrrrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbbrbrbrbrbrbrbrbrbrbr", nil, nil, nil, true, nil)
+        let item = ItemForUpload("aaaaaaaaaaaaaaaaagggggggggggggggggggbbbbbbbbbbbbbbbbbrrrrrrrrrrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbrbbrbrbrbrbrbrbrbrbrbr", nil, nil, nil, true, false, nil)
         let expectedError = ValidationService.ValidationError.titleTooLong
         var error: ValidationService.ValidationError?
         

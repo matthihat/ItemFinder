@@ -27,7 +27,7 @@ class SearchOptionsMenuView: UIView {
         return label
     }()
     
-    let extenSearchSwitch: UISwitch = {
+    let extendSearchSwitch: UISwitch = {
         let sender = UISwitch()
         sender.isOn = false
         sender.addTarget(self, action: #selector(handleExtendSearch(_:)), for: .valueChanged)
@@ -42,6 +42,8 @@ class SearchOptionsMenuView: UIView {
     }()
     
     var extendSearchToAdminArea = false
+    var searchInAllCategories = true
+    var searchInCategory: SportCategories?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,7 +60,7 @@ class SearchOptionsMenuView: UIView {
         
         backgroundColor = .systemYellow
         
-        addSubviews(menuLabel, cityLabel, administrativeAreaLabel, confirmButton)
+        addSubviews(menuLabel, cityLabel, administrativeAreaLabel, extendSearchSwitch, confirmButton)
         
         menuLabel.centerX(inView: self)
         menuLabel.anchor(top: safeAreaLayoutGuide.topAnchor, paddingTop: 16)
@@ -66,6 +68,9 @@ class SearchOptionsMenuView: UIView {
         cityLabel.anchor(top: menuLabel.bottomAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
         
         administrativeAreaLabel.anchor(top: cityLabel.bottomAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 16)
+        
+        extendSearchSwitch.anchor(top: nil, left: administrativeAreaLabel.rightAnchor, paddingLeft: 24)
+        extendSearchSwitch.centerYAnchor.constraint(equalTo: administrativeAreaLabel.centerYAnchor).isActive = true
         
         confirmButton.centerX(inView: self)
         confirmButton.anchor(left: leftAnchor, bottom: safeAreaLayoutGuide.bottomAnchor, right: rightAnchor, paddingLeft: 16, paddingBottom: 16, paddingRight: 16)
@@ -90,7 +95,7 @@ class SearchOptionsMenuView: UIView {
     }
     
     @objc func handleApplyButtonPressed() {
-        delegate?.selectedSearchOptions(self, extendSearchToAdminArea)
+        delegate?.selectedSearchOptions(self, extendSearchToAdminArea, searchInAllCategories, nil)
     }
     
 }
