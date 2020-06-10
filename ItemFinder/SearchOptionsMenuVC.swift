@@ -17,6 +17,7 @@ class SearchOptionsMenuVC: UIViewController {
     var currentCity: String?
     var currentAdministrativeArea: String?
     var currentCountry: String?
+    var searchItemsForGiveAway = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,18 +73,26 @@ class SearchOptionsMenuVC: UIViewController {
 }
 
 extension SearchOptionsMenuVC: SearchViewDelegate {
-    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?) {
+    func didSelectSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool) {
         
-        guard let city = currentCity, let country = currentCountry, let administrativeArea = currentAdministrativeArea else { return }
+        //        send selected search options to table view controller
+        delegate?.didSelectSearchOptions(self, extendSearch, searchInAllCategories, searchInCategory, searchItemsForGiveAway)
         
-//        send selected search options to table view controller
-        delegate?.performSearch(self, country, administrativeArea, city, extendSearch, searchInAllCategories, searchInCategory)
-        
-//        dismiss search options vc
+        //        dismiss search options vc
         self.dismiss(animated: true, completion: nil)
-        
     }
-    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool) {
+    
+//    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?) {
+//
+//        guard let city = currentCity, let country = currentCountry, let administrativeArea = currentAdministrativeArea else { return }
+//
+////        send selected search options to table view controller
+//        delegate?.didSelectSearchOptions(self, country, administrativeArea, city, extendSearch, searchInAllCategories, searchInCategory, searchItemsForGiveAway)
+//
+//
+//
+//    }
+//    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool) {
         
 //
 //
@@ -100,5 +109,5 @@ extension SearchOptionsMenuVC: SearchViewDelegate {
 //        }
 //
 //        self.dismiss(animated: true, completion: nil)
-    }
+//    }
 }

@@ -41,5 +41,22 @@ enum SportCategories: String {
     }
 }
 
+//Custom error
+    enum SearchItemError: Error {
+        case couldNotSearchInArea
+        case failedToFetchItems
+    }
+
+//Custom error descriptions
+extension SearchItemError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .couldNotSearchInArea:
+            return NSLocalizedString("Error establishing your user location, can not perform search without accessing your current location", comment: "Error retreiving user location")
+        case .failedToFetchItems:
+            return NSLocalizedString("Error downloading items from server", comment: "Error fetching items from db")
+        }
+    }
+}
 
 

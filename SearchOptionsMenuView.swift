@@ -44,6 +44,7 @@ class SearchOptionsMenuView: UIView {
     var extendSearchToAdminArea = false
     var searchInAllCategories = true
     var searchInCategory: SportCategories?
+    var searchItemsForGiveAway = true
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,7 +96,7 @@ class SearchOptionsMenuView: UIView {
     }
     
     @objc func handleApplyButtonPressed() {
-        delegate?.selectedSearchOptions(self, extendSearchToAdminArea, searchInAllCategories, nil)
+        delegate?.didSelectSearchOptions(self, extendSearchToAdminArea, searchInAllCategories, nil, searchItemsForGiveAway)
     }
     
 }

@@ -11,6 +11,10 @@ import CoreLocation
 
 class LocationManager: NSObject {
     
+//    create singleton
+//    MARK: - TODO use singleton in different classes instead of creating a new object
+    static let shared = LocationManager()
+    
     private let locationManager = CLLocationManager()
     
 //    MARK: - API

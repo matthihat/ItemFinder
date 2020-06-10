@@ -667,7 +667,7 @@ class Service: NSObject {
         }
     }
     
-    func searchItemsForSaleInCurrentCity(_ country: String, _ locality: String, completion: @escaping(Result<DownloadedItem,NetworkError>) -> Void) {
+    func searchItemsForSaleInAllCategoriesInCurrentCity(_ country: String, _ locality: String, completion: @escaping(Result<DownloadedItem,NetworkError>) -> Void) {
         
         REF_LOCATIONS_LOCALITY.child(country).child(locality).child("is_for_sale").observeSingleEvent(of: .value) { (snapshot) in
             
