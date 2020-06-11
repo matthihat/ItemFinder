@@ -686,10 +686,71 @@ class Service: NSObject {
                     completion(.success(item))
                     
                 }
-                
-                
             }
         }
+        
+        REF_LOCATIONS_LOCALITY.child(country).child(locality).child("is_for_give_away").observeSingleEvent(of: .value) { (snapshot) in
+             
+             guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { completion(.failure(.couldNotFetchItem)); return }
+             
+             allItemIds.forEach { (dict) in
+                 
+                 let itemId = dict.key
+                 
+                 REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
+                     
+                     guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                     
+                     let item = DownloadedItem(dict)
+                     
+                     completion(.success(item))
+                     
+                 }
+             }
+         }
+    }
+    
+    func searchItemsForSaleInAllCategoriesInCurrentAdminArea(_ country: String, _ administrativeArea: String, completion: @escaping(Result<DownloadedItem,NetworkError>) -> Void) {
+        
+        REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).child("is_for_sale").observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { completion(.failure(.couldNotFetchItem)); return }
+            
+            allItemIds.forEach { (dict) in
+                
+                let itemId = dict.key
+                
+                REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
+                    
+                    guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                    
+                    let item = DownloadedItem(dict)
+                    
+                    completion(.success(item))
+                    
+                }
+            }
+        }
+        
+        REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).child("is_for_give_away").observeSingleEvent(of: .value) { (snapshot) in
+             
+             guard let allItemIds = snapshot.children.allObjects as? [DataSnapshot] else { completion(.failure(.couldNotFetchItem)); return }
+             
+             allItemIds.forEach { (dict) in
+                 
+                 let itemId = dict.key
+                 
+                 REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
+                     
+                     guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                     
+                     let item = DownloadedItem(dict)
+                     
+                     completion(.success(item))
+                     
+                 }
+             }
+         }
     }
 }
 

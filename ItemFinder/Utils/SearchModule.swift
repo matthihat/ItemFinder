@@ -18,6 +18,7 @@ class SearchModule: NSObject {
     private var searchItemsForGiveAway = true
     private var searchInCategory: SportCategories?
     private let locationManager = LocationManager.shared
+    private let service = Service.shared
     
     override init() {
         super.init()
@@ -81,7 +82,7 @@ class SearchModule: NSObject {
 //        perform search in all categories in current city. - Default search
         if searchInAllCategories == true && extendSearch == false && searchItemsForGiveAway == true {
             
-            Service.shared.searchItemsForSaleInAllCategoriesInCurrentCity(country, city) { (result) in
+            service.searchItemsForSaleInAllCategoriesInCurrentCity(country, city) { (result) in
                 switch result {
                 case .success(let item):
                     completion(.success(item))
@@ -90,7 +91,19 @@ class SearchModule: NSObject {
                 }
             }
         }
+        
+//        perform search in all categories in current admin area. - widest search
+        if searchInAllCategories == true && extendSearch == true && searchItemsForGiveAway == true {
+            service.searchItemsForSaleInAllCategoriesInCurrentAdminArea(country, adminArea) { (result) in
+                
+                switch result {
+                case .success(let item):
+                        completion(.success(item))
+                    case .failure(_):
+                        completion(.failure(.failedToFetchItems))
+                }
+            }
+        }
     }
-
 }
 

@@ -45,7 +45,11 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
             print("DEBUG reloading")
             tableView.reloadData()
         }
-        
+    }
+    
+    func removeAllItemsFromTableView(_ tableView: UITableView) {
+        model.removeAll()
+        tableView.reloadData()
     }
     
     

@@ -48,7 +48,7 @@ struct ItemForUpload {
             switch result {
                 
             case .success(_):
-                Void()
+                completion(.success(true))
             case .failure(let error):
                 completion(.failure(error))
                 return
@@ -165,7 +165,8 @@ struct ItemForUpload {
 
                 switch result {
                 case .success(_):
-                    completion(.success(true))
+//                    completion(.success(true))
+                    Void()
                 case .failure(let error):
                     completion(.failure(error))
                 }

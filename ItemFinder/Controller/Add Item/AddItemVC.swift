@@ -217,7 +217,8 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
 //    when save button in view is pressed
     func saveButton(_ button: UIButton, withTitle title: String?, withKeyWords keyWords: String?, withDescription description: String?) {
         
-        
+        let group = DispatchGroup()
+        group.enter()
         
 //        create item
         let itemUnvalidated = ItemForUpload(title, keyWords, description, selectedImages, itemIsForSale ?? false, itemIsForGiveAway ?? false, selectedCategory)
@@ -232,7 +233,13 @@ class AddItemVC: UIViewController, AddItemVCDelegate, AddItemViewDelegate, Image
                 
                 switch result {
                 case .success(_):
-                    print("DEBUG success!")
+
+                    group.leave()
+                    
+                    group.notify(queue: .main) {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    
                 case .failure(let error):
                     SVProgressHUD.showError(withStatus: error.localizedDescription)
                     print("DEBUG error uploading info", error.localizedDescription)
