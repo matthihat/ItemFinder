@@ -15,7 +15,7 @@ class Search_Options_Menu_View_Tests: XCTestCase {
     var currentCity: String!
     var currentAdminArea: String!
     var expectedResultCity: String!
-    var expectedRAdminArea: String!
+    var expectedAdminArea: String!
     
 //    given
     override func setUp() {
@@ -25,7 +25,7 @@ class Search_Options_Menu_View_Tests: XCTestCase {
         currentCity = "Söderhamn"
         currentAdminArea = "Gävleborg"
         expectedResultCity = "Search items in: Söderhamn"
-        expectedRAdminArea = "Extend search to: Gävleborg"
+        expectedAdminArea = "Extend search to: Gävleborg"
         
     }
     
@@ -36,7 +36,7 @@ class Search_Options_Menu_View_Tests: XCTestCase {
         currentCity = nil
         currentAdminArea = nil
         expectedResultCity = nil
-        expectedRAdminArea = nil
+        expectedAdminArea = nil
     }
     
 //    when
@@ -52,7 +52,7 @@ class Search_Options_Menu_View_Tests: XCTestCase {
         sut.displayAdminAreaLocation(currentAdminArea)
         guard let text = sut.administrativeAreaLabel.text else { return }
         
-        XCTAssertEqual(expectedRAdminArea, text)
+        XCTAssertEqual(expectedAdminArea, text)
     }
     
 

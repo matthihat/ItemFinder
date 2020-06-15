@@ -17,8 +17,13 @@ class MainItemCVDataSource: NSObject, UICollectionViewDataSource {
     
     var model = [Item]()
     
-    init(_ collectionView: UICollectionView) {
+    private let database: ItemDatabase
+    
+    private let validationService = ValidationService()
+    
+    init(_ collectionView: UICollectionView, _ database: ItemDatabase) {
         self.collectionView = collectionView
+        self.database = database
         
         super.init()
         
@@ -35,15 +40,27 @@ class MainItemCVDataSource: NSObject, UICollectionViewDataSource {
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        Service.shared.fetcCurrentUserItems(uid) { (result) in
+        database.fetchCurrentUserItemsInfo(uid) { (result) in
             
             var itemCounter = -1
             
             switch result {
-            case .success(let item):
+            case .success(let itemInfo):
+            
+                do {
+                    if let validatedInfo = try self.validationService.validateItemInfoDict(validateDict: itemInfo) {
+                        
+                        let item = Item(validatedInfo.itemId, validatedInfo.ownerUid, validatedInfo.isForSale, validatedInfo.isForGiveAway, itemInfo)
+                        
+                        self.model.append(item)
+                    }
+                    
+                } catch {
+                    print(error)
+                }
                 
 //                append item to model
-                self.model.append(item)
+//                self.model.append(item)
 
                 itemCounter += 1
                 let indexPath: IndexPath = .init(row: itemCounter, section: 0)

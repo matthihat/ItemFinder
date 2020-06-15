@@ -68,6 +68,7 @@ class SearchModule: NSObject {
     }
     
 //    perform search
+//    MARK: TODO change return value so that it returns i dict with item info
     func performSearch(completion: @escaping(Result<DownloadedItem, SearchItemError>) -> Void) {
         
         
@@ -85,7 +86,8 @@ class SearchModule: NSObject {
             service.searchItemsForSaleInAllCategoriesInCurrentCity(country, city) { (result) in
                 switch result {
                 case .success(let item):
-                    completion(.success(item))
+//                    completion(.success(item))
+                    Void()
                 case .failure(_):
                     completion(.failure(.failedToFetchItems))
                 }

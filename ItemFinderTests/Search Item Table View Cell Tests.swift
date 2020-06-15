@@ -12,10 +12,11 @@ import XCTest
 class Search_Item_Table_View_Cell_Tests: XCTestCase {
 
     var sut: SearchItemTableViewCell!
-    var dict: [String:AnyObject]!
-    var item: DownloadedItem!
+    var dict: [String:Any]!
+    var item: Item!
     var expectedResult: String!
     var text: String!
+    var validationService: ValidationService!
     
     override func setUp() {
         sut = SearchItemTableViewCell()
@@ -24,24 +25,44 @@ class Search_Item_Table_View_Cell_Tests: XCTestCase {
                 "id": "123",
                 "owner_uid":"999",
                 "is_for_sale": true,
-                "is_for_give_away": false] as [String:AnyObject]
-        item = DownloadedItem(dict)
+                "is_for_give_away": false] as [String:Any]
+        
+//        unvalidDict = ["första":123]
+        
+        validationService = ValidationService()
+        
+        
         sut.item = item
         expectedResult = "Grejen 1"
     }
     
     override func tearDown() {
         sut = nil
-        dict = nil
         item = nil
         expectedResult = nil
+        validationService = nil
+        text = nil
     }
     
     func test_titlelabel_displays_item_title_Grejen1() {
-       text = sut.titleLabel.text
         
-        
-        XCTAssertEqual(expectedResult, text)
+        do {
+            
+            guard let validDict = try validationService.validateItemInfoDict(validateDict: dict) else {
+                XCTFail()
+                return
+            }
+            
+            let item = Item(validDict.itemId, validDict.ownerUid,
+                            validDict.isForSale, validDict.isForGiveAway,
+                            dict)
+            
+            sut.item = item
+            text = sut.titleLabel.text
+            XCTAssertEqual(expectedResult, text)
+            
+            
+        } catch {}
     }
 
 }

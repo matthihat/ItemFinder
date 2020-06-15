@@ -12,7 +12,7 @@ class SearchItemTableViewCell: UITableViewCell {
     
     static var reuseIdentifier = "reuseIdentifier"
     
-    var item: DownloadedItem? {
+    var item: Item? {
         didSet {
 //            textLabel?.text = item?.title
 //            detailTextLabel?.text = item?.itemId

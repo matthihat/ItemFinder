@@ -33,7 +33,7 @@ enum CustomError: Error {
 
 enum SportCategories: String {
     case biking = "Biking"
-    case running = "Running"
+    case running = "Running" 
     case skiing = "Skiing"
     
     var dbRef: String {

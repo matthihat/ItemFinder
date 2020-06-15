@@ -16,7 +16,7 @@ class ItemCell: UICollectionViewCell {
         didSet {
             titleLabel.text = item?.title
             categoryLabel.text = item?.category
-            descriptionLabel.text = item?.itemDescription
+            descriptionLabel.text = item?.description
             keywordsLabel.text = item?.keywords
             isForSaleLabel.text = item?.isForSale == true ? "For sale" : "Not for sale"
         }

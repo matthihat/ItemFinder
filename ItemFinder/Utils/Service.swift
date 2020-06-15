@@ -645,7 +645,7 @@ class Service: NSObject {
 //        }.resume()
 //    }
     
-    func fetcCurrentUserItems(_ uid: String, completion: @escaping(Result<Item,Error>) -> Void) {
+    func fetchCurrentUserItemsInfo(_ uid: String, completion: @escaping(Result<Dictionary<String,Any>,Error>) -> Void) {
         
 //        grab item id from user ref
         USER_REF.child(uid).child("items").observeSingleEvent(of: .value) { (snapshot) in
@@ -659,9 +659,10 @@ class Service: NSObject {
                 REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (itemSnap) in
                     
                     guard let dict = itemSnap.value as? [String:Any] else { return }
-                    
-                    let item = Item(id: itemId, dict: dict)
-                    completion(.success(item))
+//                    let downloadedItem = DownloadedItem(dict)
+//                    let item = downloadedItem.completedItem(with: dict)
+
+                    completion(.success(dict))
                 }
             }
         }
@@ -724,7 +725,13 @@ class Service: NSObject {
                     
                     guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
                     
+//                    do {
+//                        let item = try
+//                    }
+                    
                     let item = DownloadedItem(dict)
+                    
+                    
                     
                     completion(.success(item))
                     
@@ -752,6 +759,48 @@ class Service: NSObject {
              }
          }
     }
+    
+//    func createItem(with dict: Dictionary<String,AnyObject>) {
+//
+//        do {
+//            let item = try ValidationService
+//        }
+//
+//    }
+}
+
+class ItemService {
+    
+    static let shared = ItemService()
+    
+    func fetchCurrentUserItemsInfo(_ uid: String, completion: @escaping(Result<Dictionary<String,Any>,Error>) -> Void) {
+        
+//        grab item id from user ref
+        USER_REF.child(uid).child("items").observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let allChildren = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            allChildren.forEach { (snap) in
+                
+                let itemId = snap.key
+                
+                REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (itemSnap) in
+                    
+                    guard let dict = itemSnap.value as? [String:Any] else { return }
+//                    let downloadedItem = DownloadedItem(dict)
+//                    let item = downloadedItem.completedItem(with: dict)
+
+                    completion(.success(dict))
+                }
+            }
+        }
+    }
+}
+
+extension ItemService: ItemDatabase {}
+
+protocol ItemDatabase {
+    func fetchCurrentUserItemsInfo(_ uid: String, completion: @escaping(Result<Dictionary<String,Any>,Error>) -> Void)
 }
 
 enum NetworkError: Error {

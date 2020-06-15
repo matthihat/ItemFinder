@@ -21,12 +21,35 @@ struct ValidationService {
         return item
     }
     
+//    validate downloaded item info dict
+    typealias itemInfo = (itemId: String, ownerUid: String, isForSale: Bool, isForGiveAway: Bool)
+    func validateItemInfoDict(validateDict dict: Dictionary<String,Any>) throws -> itemInfo? {
+        guard let itemId = dict["id"] as? String else {
+            throw ValidationError.requiredInfoNotFound
+        }
+        
+        guard let ownerUid = dict["owner_uid"] as? String else {
+            throw ValidationError.requiredInfoNotFound
+        }
+        
+        guard let isForSale = dict["is_for_sale"] as? Bool else {
+            throw ValidationError.requiredInfoNotFound
+        }
+        
+        guard let isForGiveAway = dict["is_for_give_away"] as? Bool else {
+            throw ValidationError.requiredInfoNotFound
+        }
+        
+        return itemInfo(itemId, ownerUid, isForSale, isForGiveAway)
+    }
+    
     
     enum ValidationError: LocalizedError {
         case invalidValue
         case titleTooShort
         case titleTooLong
         case itemIsForSaleAndForGiveAway
+        case requiredInfoNotFound
         
         var errorDescription: String? {
             switch self {
@@ -38,6 +61,8 @@ struct ValidationService {
                 return "Title is too long."
             case .itemIsForSaleAndForGiveAway:
                 return "Item can not be for sale and for give away."
+            case .requiredInfoNotFound:
+                return "Required item info not found"
             }
         }
     }

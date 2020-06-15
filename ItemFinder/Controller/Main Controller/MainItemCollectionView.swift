@@ -28,6 +28,8 @@ class MainItemCollectionView: UICollectionViewController {
     var uid: String?
     
     var selectedIndexPath: IndexPath?
+    
+    lazy var database = ItemService()
 
 
 //  MARK: - Life cycle
@@ -40,7 +42,7 @@ class MainItemCollectionView: UICollectionViewController {
         
         configureCollectionViewDataSource()
 
-        configureCollectionView()
+        configureCollectionView() 
         
         configureRefreshControl()
         
@@ -55,7 +57,7 @@ class MainItemCollectionView: UICollectionViewController {
     }
     
     func configureCollectionViewDataSource() {
-        mainItemCVDataSource = MainItemCVDataSource(self.collectionView)
+        mainItemCVDataSource = MainItemCVDataSource(self.collectionView, database)
     }
     
     func configureCollectionView() {

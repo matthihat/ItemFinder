@@ -12,11 +12,21 @@ import XCTest
 class Validation_Service_Tests: XCTestCase {
 
     var sut: ValidationService!
+    var dict: [String:Any]!
+    var unvalidDict: [String:Int]!
     
     override func setUp() {
         super.setUp()
         
         sut = ValidationService()
+        
+        dict = ["title":"Grejen 1",
+        "id": "123",
+        "owner_uid":"999",
+        "is_for_sale": true,
+        "is_for_give_away": false] as [String:Any]
+        
+        unvalidDict = ["första":123]
         
         
     }
@@ -25,6 +35,9 @@ class Validation_Service_Tests: XCTestCase {
         super.tearDown()
         
         sut = nil
+        dict = nil
+        unvalidDict = nil
+
     }
     
     func test_is_item_title_nil() throws {
@@ -67,6 +80,19 @@ class Validation_Service_Tests: XCTestCase {
         }
         
         XCTAssertEqual(expectedError, error)
+    }
+    
+    func test_is_dictionary_valid() throws {
+        XCTAssertNoThrow(try sut.validateItemInfoDict(validateDict: dict))
+    }
+    
+    func test_is_dictionary_unvalid() throws {
+        var error = ValidationService.ValidationError.invalidValue
+        
+        XCTAssertThrowsError(try sut.validateItemInfoDict(validateDict: unvalidDict)) {
+            thrownError in
+            error = (thrownError as? ValidationService.ValidationError)!
+        }
     }
 
 }

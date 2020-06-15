@@ -11,7 +11,7 @@ import UIKit
 class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     var delegate: SearchTableDelegate
-    var model = [DownloadedItem]()
+    var model = [Item]()
     
     init(delegate: SearchTableDelegate) {
         self.delegate = delegate
@@ -34,7 +34,7 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
         return cell
     }
     
-    func provideItemDataAndReloadTableView(_ tableView: UITableView, _ item: DownloadedItem) {
+    func provideItemDataAndReloadTableView(_ tableView: UITableView, _ item: Item) {
         
         let itemAlreadyExistsInModel = model.contains { (existingItem) -> Bool in
             existingItem.itemId == item.itemId
