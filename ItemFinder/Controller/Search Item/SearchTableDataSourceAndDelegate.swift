@@ -10,11 +10,23 @@ import UIKit
 
 class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITableViewDelegate {
     
-    var delegate: SearchTableDelegate
+    weak var delegate: SearchTableDelegate?
+    var tableView: UITableView!
     var model = [Item]()
+    var filteredModel: [Item]?
+    var inSearchMode = false {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
-    init(delegate: SearchTableDelegate) {
+//    var includeItemDescriptionInSearch = false
+    
+    init(delegate: SearchTableDelegate, tableView: UITableView) {
         self.delegate = delegate
+        self.tableView = tableView
+        super.init()
+
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -22,16 +34,20 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.count
+        return inSearchMode ? filteredModel?.count ?? 0 : model.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchItemTableViewCell.reuseIdentifier) as! SearchItemTableViewCell
         
-        cell.item = model[indexPath.row]
+        cell.item = inSearchMode ? filteredModel?[indexPath.row] : model[indexPath.row]
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        delegate?.didSelectRow(tableView, indexPath: indexPath)
     }
     
     func provideItemDataAndReloadTableView(_ tableView: UITableView, _ item: Item) {
@@ -42,13 +58,30 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
         
         if itemAlreadyExistsInModel == false {
             model.append(item)
-            print("DEBUG reloading")
             tableView.reloadData()
         }
     }
     
     func removeAllItemsFromTableView(_ tableView: UITableView) {
         model.removeAll()
+        tableView.reloadData()
+    }
+    
+    func searchItems(_ tableView: UITableView, searchText: String, includeItemDescriptionInSearch: Bool) {
+        print("DEBUG ", includeItemDescriptionInSearch)
+        
+//        MARK: TODO - fix below search
+        if includeItemDescriptionInSearch {
+            filteredModel = model.filter({ (item) -> Bool in
+                return item.description?.lowercased().contains(searchText) ?? false
+//                item.title?.lowercased().contains(searchText) ?? false &&
+            })
+        } else {
+            filteredModel = model.filter({ (item) -> Bool in
+                return (item.title?.lowercased().contains(searchText))!
+            })
+        }
+        
         tableView.reloadData()
     }
     

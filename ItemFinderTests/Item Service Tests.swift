@@ -17,6 +17,7 @@ class Item_Service_Tests: XCTestCase {
         case invalidData
     }
     var expectedError: MockServiceError!
+    var err = MockServiceError.invalidData
 
     override func setUp() {
         sut = MockItemService()
@@ -25,13 +26,7 @@ class Item_Service_Tests: XCTestCase {
          "is_for_sale": true,
          "is_for_give_away": false
         ]
-        
-        
-        
-//        expectedError = .invalidData
-        
-        
-        
+
     }
     
     override func tearDown() {
@@ -50,15 +45,13 @@ class Item_Service_Tests: XCTestCase {
                 let firstKey = dict.keys.first
                 XCTAssertEqual(self.expectedResponse.keys.first, firstKey)
             case .failure(let error):
-                guard let mockError = error as? MockServiceError else {
-                    XCTFail()
-                    return
-                }
-                XCTAssertEqual(self.expectedError, mockError)
+                
+                XCTAssertEqual(self.expectedError, error as? Item_Service_Tests.MockServiceError)
+                expectation.fulfill()
             }
         }
+        self.waitForExpectations(timeout: 3, handler: nil)
         
-        self.waitForExpectations(timeout: 10, handler: nil)
     }
 
 }

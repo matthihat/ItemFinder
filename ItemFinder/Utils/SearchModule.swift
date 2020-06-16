@@ -69,7 +69,7 @@ class SearchModule: NSObject {
     
 //    perform search
 //    MARK: TODO change return value so that it returns i dict with item info
-    func performSearch(completion: @escaping(Result<DownloadedItem, SearchItemError>) -> Void) {
+    func performSearchAndFetchItemInfoDict(completion: @escaping(Result<Dictionary<String,Any>, SearchItemError>) -> Void) {
         
         
         guard let country = currentCountry,
@@ -83,10 +83,10 @@ class SearchModule: NSObject {
 //        perform search in all categories in current city. - Default search
         if searchInAllCategories == true && extendSearch == false && searchItemsForGiveAway == true {
             
-            service.searchItemsForSaleInAllCategoriesInCurrentCity(country, city) { (result) in
+            service.searchItemsForSaleAndGiveAwayInAllCategoriesInCurrentCity(country, city) { (result) in
                 switch result {
-                case .success(let item):
-//                    completion(.success(item))
+                case .success(let dict):
+                    completion(.success(dict))
                     Void()
                 case .failure(_):
                     completion(.failure(.failedToFetchItems))
@@ -99,8 +99,8 @@ class SearchModule: NSObject {
             service.searchItemsForSaleInAllCategoriesInCurrentAdminArea(country, adminArea) { (result) in
                 
                 switch result {
-                case .success(let item):
-                        completion(.success(item))
+                case .success(let dict):
+                        completion(.success(dict))
                     case .failure(_):
                         completion(.failure(.failedToFetchItems))
                 }

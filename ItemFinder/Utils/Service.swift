@@ -645,7 +645,7 @@ class Service: NSObject {
 //        }.resume()
 //    }
     
-    func fetchCurrentUserItemsInfo(_ uid: String, completion: @escaping(Result<Dictionary<String,Any>,Error>) -> Void) {
+    func fetchCurrentUserItemsInfo(_ uid: String, completion: @escaping(Result<Dictionary<String,Any>,NetworkError>) -> Void) {
         
 //        grab item id from user ref
         USER_REF.child(uid).child("items").observeSingleEvent(of: .value) { (snapshot) in
@@ -658,7 +658,10 @@ class Service: NSObject {
                 
                 REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (itemSnap) in
                     
-                    guard let dict = itemSnap.value as? [String:Any] else { return }
+                    guard let dict = itemSnap.value as? [String:Any] else { completion(.failure(.couldNotFetchItem)); return }
+                    
+//                    completion(.success(dict))
+                    
 //                    let downloadedItem = DownloadedItem(dict)
 //                    let item = downloadedItem.completedItem(with: dict)
 
@@ -668,7 +671,7 @@ class Service: NSObject {
         }
     }
     
-    func searchItemsForSaleInAllCategoriesInCurrentCity(_ country: String, _ locality: String, completion: @escaping(Result<DownloadedItem,NetworkError>) -> Void) {
+    func searchItemsForSaleAndGiveAwayInAllCategoriesInCurrentCity(_ country: String, _ locality: String, completion: @escaping(Result<Dictionary<String,Any>,NetworkError>) -> Void) {
         
         REF_LOCATIONS_LOCALITY.child(country).child(locality).child("is_for_sale").observeSingleEvent(of: .value) { (snapshot) in
             
@@ -680,11 +683,12 @@ class Service: NSObject {
                 
                 REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
                     
-                    guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                    guard let dict = snapshot.value as? Dictionary<String,Any> else { completion(.failure(.couldNotFetchItem)); return }
                     
-                    let item = DownloadedItem(dict)
+//                    completion(.s)
+//                    let item = DownloadedItem(dict)
                     
-                    completion(.success(item))
+                    completion(.success(dict))
                     
                 }
             }
@@ -700,18 +704,18 @@ class Service: NSObject {
                  
                  REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
                      
-                     guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                     guard let dict = snapshot.value as? Dictionary<String,Any> else { completion(.failure(.couldNotFetchItem)); return }
                      
-                     let item = DownloadedItem(dict)
+//                     let item = DownloadedItem(dict)
                      
-                     completion(.success(item))
+                     completion(.success(dict))
                      
                  }
              }
          }
     }
     
-    func searchItemsForSaleInAllCategoriesInCurrentAdminArea(_ country: String, _ administrativeArea: String, completion: @escaping(Result<DownloadedItem,NetworkError>) -> Void) {
+    func searchItemsForSaleInAllCategoriesInCurrentAdminArea(_ country: String, _ administrativeArea: String, completion: @escaping(Result<Dictionary<String,Any>,NetworkError>) -> Void) {
         
         REF_LOCATIONS_ADMINISTRATIVE_AREA.child(country).child(administrativeArea).child("is_for_sale").observeSingleEvent(of: .value) { (snapshot) in
             
@@ -723,17 +727,17 @@ class Service: NSObject {
                 
                 REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
                     
-                    guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                    guard let dict = snapshot.value as? Dictionary<String,Any> else { completion(.failure(.couldNotFetchItem)); return }
                     
 //                    do {
 //                        let item = try
 //                    }
                     
-                    let item = DownloadedItem(dict)
+//                    let item = DownloadedItem(dict)
                     
                     
                     
-                    completion(.success(item))
+                    completion(.success(dict))
                     
                 }
             }
@@ -749,11 +753,11 @@ class Service: NSObject {
                  
                  REF_ITEMS.child(itemId).observeSingleEvent(of: .value) { (snapshot) in
                      
-                     guard let dict = snapshot.value as? Dictionary<String,AnyObject> else { completion(.failure(.couldNotFetchItem)); return }
+                     guard let dict = snapshot.value as? Dictionary<String,Any> else { completion(.failure(.couldNotFetchItem)); return }
                      
-                     let item = DownloadedItem(dict)
+//                     let item = DownloadedItem(dict)
                      
-                     completion(.success(item))
+                     completion(.success(dict))
                      
                  }
              }

@@ -49,10 +49,11 @@ protocol SearchTableDelegate: class {
     func didSelectRow(_ tableView: UITableView, indexPath: IndexPath)
 }
 
+//MARK: - TODO create search option model to avoid passing around so many values in argument labels
 protocol SearchOptionsMenuDelegate: class {
-    func didSelectSearchOptions(_ vc: UIViewController, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool)
+    func didSelectSearchOptions(_ vc: UIViewController, _ extendSearch: Bool, _ includeItemDescriptionInSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool)
 }
 
 protocol SearchViewDelegate: class {
-    func didSelectSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool)
+    func didSelectSearchOptions(_ view: UIView, _ extendSearch: Bool, _ includeItemDescriptionInSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool)
 }

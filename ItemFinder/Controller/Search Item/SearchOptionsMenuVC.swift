@@ -73,13 +73,14 @@ class SearchOptionsMenuVC: UIViewController {
 }
 
 extension SearchOptionsMenuVC: SearchViewDelegate {
-    func didSelectSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool) {
+    func didSelectSearchOptions(_ view: UIView, _ extendSearch: Bool, _ includeItemDescriptionInSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?, _ searchItemsForGiveAway: Bool) {
         
         //        send selected search options to table view controller
-        delegate?.didSelectSearchOptions(self, extendSearch, searchInAllCategories, searchInCategory, searchItemsForGiveAway)
+        delegate?.didSelectSearchOptions(self, extendSearch, includeItemDescriptionInSearch, searchInAllCategories, searchInCategory, searchItemsForGiveAway)
         
         //        dismiss search options vc
         self.dismiss(animated: true, completion: nil)
+    
     }
     
 //    func selectedSearchOptions(_ view: UIView, _ extendSearch: Bool, _ searchInAllCategories: Bool, _ searchInCategory: SportCategories?) {
