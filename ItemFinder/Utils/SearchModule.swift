@@ -82,7 +82,7 @@ class SearchModule: NSObject {
         
 //        perform search in all categories in current city. - Default search
         if searchInAllCategories == true && extendSearch == false && searchItemsForGiveAway == true {
-            
+
             service.searchItemsForSaleAndGiveAwayInAllCategoriesInCurrentCity(country, city) { (result) in
                 switch result {
                 case .success(let dict):
@@ -96,6 +96,7 @@ class SearchModule: NSObject {
         
 //        perform search in all categories in current admin area. - widest search
         if searchInAllCategories == true && extendSearch == true && searchItemsForGiveAway == true {
+
             service.searchItemsForSaleInAllCategoriesInCurrentAdminArea(country, adminArea) { (result) in
                 
                 switch result {
@@ -103,6 +104,17 @@ class SearchModule: NSObject {
                         completion(.success(dict))
                     case .failure(_):
                         completion(.failure(.failedToFetchItems))
+                }
+            }
+            
+//        perform search in all categories in current city
+            service.searchItemsForSaleAndGiveAwayInAllCategoriesInCurrentCity(country, city) { (result) in
+                
+                switch result {
+                case .success(let dict):
+                    completion(.success(dict))
+                case .failure(_):
+                    completion(.failure(.failedToFetchItems))
                 }
             }
         }

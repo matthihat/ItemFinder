@@ -14,6 +14,8 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
     var tableView: UITableView!
     var model = [Item]()
     var filteredModel: [Item]?
+    var searchModule: SearchModule
+    lazy var validationService = ValidationService()
     var inSearchMode = false {
         didSet {
             tableView.reloadData()
@@ -22,9 +24,10 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
     
 //    var includeItemDescriptionInSearch = false
     
-    init(delegate: SearchTableDelegate, tableView: UITableView) {
+    init(delegate: SearchTableDelegate, tableView: UITableView, searchModule: SearchModule) {
         self.delegate = delegate
         self.tableView = tableView
+        self.searchModule = searchModule
         super.init()
 
     }
@@ -47,10 +50,12 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        delegate?.didSelectRow(tableView, indexPath: indexPath)
+        delegate?.didSelectItem(self.tableView, inSearchMode ? filteredModel?[indexPath.row] : model[indexPath.row])
+        
     }
     
-    func provideItemDataAndReloadTableView(_ tableView: UITableView, _ item: Item) {
+    
+    func provideItemDataAndReloadTableView(_ item: Item) {
         
         let itemAlreadyExistsInModel = model.contains { (existingItem) -> Bool in
             existingItem.itemId == item.itemId
@@ -62,28 +67,61 @@ class SearchTableDataSourceAndDelegate: NSObject, UITableViewDataSource, UITable
         }
     }
     
-    func removeAllItemsFromTableView(_ tableView: UITableView) {
-        model.removeAll()
-        tableView.reloadData()
-    }
+//    func removeAllItemsFromTableView(_ tableView: UITableView) {
+//        model.removeAll()
+//        tableView.reloadData()
+//    }
     
-    func searchItems(_ tableView: UITableView, searchText: String, includeItemDescriptionInSearch: Bool) {
+    func searchInFetchedItems(_ tableView: UITableView, searchText: String, includeItemDescriptionInSearch: Bool) {
         print("DEBUG ", includeItemDescriptionInSearch)
         
-//        MARK: TODO - fix below search
+//        searches item description in already fetched items
         if includeItemDescriptionInSearch {
             filteredModel = model.filter({ (item) -> Bool in
-                return item.description?.lowercased().contains(searchText) ?? false
-//                item.title?.lowercased().contains(searchText) ?? false &&
+                return item.description?.lowercased().contains(searchText) ?? false ||
+                item.title?.lowercased().contains(searchText) ?? false
             })
         } else {
+//            searches item title in already fetched items
             filteredModel = model.filter({ (item) -> Bool in
-                return (item.title?.lowercased().contains(searchText))!
+                return item.title?.lowercased().contains(searchText) ?? false
             })
         }
         
         tableView.reloadData()
     }
-    
+
+    func fetchItemsBasedOnSelectedCriteria() {
+        
+//        clear items in table view
+        model.removeAll()
+        tableView.reloadData()
+        
+//        perform search and fetch items based on criteria
+        searchModule.performSearchAndFetchItemInfoDict(completion: { (result) in
+            
+            switch result {
+            case .success(let dict):
+                do {
+                    
+                    guard let validInfo = try self.validationService.validateItemInfoDict(validateDict: dict) else { return }
+                    
+                    let item = Item(validInfo.itemId, validInfo.ownerUid, validInfo.isForSale, validInfo.isForGiveAway, dict)
+                    
+//                call methods for inserting item in rows
+                    self.provideItemDataAndReloadTableView(item)
+                    
+                } catch {
+//                    if error validating dict from database, print error to console
+                    print("DEBUG error", error.localizedDescription)
+                }
+ 
+            case .failure(let error):
+                self.delegate?.errorFetchingItemsFromDataBase(error)
+            }
+        })
+
+        tableView.refreshControl?.endRefreshing()
+    }
     
 }

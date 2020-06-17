@@ -729,14 +729,6 @@ class Service: NSObject {
                     
                     guard let dict = snapshot.value as? Dictionary<String,Any> else { completion(.failure(.couldNotFetchItem)); return }
                     
-//                    do {
-//                        let item = try
-//                    }
-                    
-//                    let item = DownloadedItem(dict)
-                    
-                    
-                    
                     completion(.success(dict))
                     
                 }

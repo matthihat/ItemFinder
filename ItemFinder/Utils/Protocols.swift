@@ -46,7 +46,9 @@ protocol CategoryPickerDelegate {
 }
 
 protocol SearchTableDelegate: class {
-    func didSelectRow(_ tableView: UITableView, indexPath: IndexPath)
+    func didSelectItem(_ tableView: UITableView, _ item: Item?)
+    
+    func errorFetchingItemsFromDataBase(_ error: Error)
 }
 
 //MARK: - TODO create search option model to avoid passing around so many values in argument labels
